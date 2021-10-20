@@ -9,29 +9,40 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
-#pragma link C++ namespace supera;
-//#pragma link C++ class larlite::Supera+;
-//#pragma link C++ class supera::Cropper+;
-#pragma link C++ class std::set<string>+;
-//#pragma link C++ class larcv::SuperaWire+;
-//#pragma link C++ class larcv::SuperaHit+;
-//#pragma link C++ class larcv::SuperaSimCh+;
-//#pragma link C++ class larcv::SuperaBase+;
-//#pragma link C++ class larcv::SuperaOpDigit+;
-//#pragma link C++ class larcv::SuperaChStatus+;
-//#pragma link C++ class supera::MCParticleTree+;
-//#pragma link C++ class supera::MCROIMaker+;
-#pragma link C++ class larcv::LArCVSuperaDriver;
-#pragma link C++ class larlite::LArLiteSuperaDriver+;
-//#pragma link C++ class larcv::SuperaMCPCluster+;
-//#pragma link C++ class larcv::SuperaKeyPointCluster+;
-#pragma link C++ class supera::GridPoint3D+;
-#pragma link C++ class supera::WireRange3D+;
-#pragma link C++ class std::vector<supera::GridPoint3D>+;
-//#pragma link C++ class supera::ImageMetaMakerBase+;
-//#pragma link C++ class supera::PulledPork3DSlicer+;
+//#pragma link C++ function larcv::cluster_to_image2d(const larcv::Pixel2DCluster&, size_t, size_t)+;
+//#pragma link C++ class larcv::ROIPad+;
+#pragma link C++ class larcv::SuperaBase+;
+#pragma link C++ class larcv::SuperaBBoxInteraction+;
+#pragma link C++ class larcv::SuperaG4Trajectory+;
+#pragma link C++ class larcv::Vec3f+;
+#pragma link C++ class larcv::Vec3d+;
+#pragma link C++ class larcv::Ray<double>+;
+#pragma link C++ class larcv::AABBox<double>+;
+#pragma link C++ class std::vector<std::vector<float> >+;
 //ADD_NEW_CLASS ... do not change this line
 #endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
