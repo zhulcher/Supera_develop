@@ -19,8 +19,8 @@ LDFLAGS  += $(LARCV_EDEPSIM_LIBS)
 endif
 
 #MINE ??????????
-INCFLAGS += -I/app/edep/include
-INCFLAGS += -I/app/geant4/include/Geant4
+#INCFLAGS += -I/app/edep/include
+#INCFLAGS += -I/app/geant4/include/Geant4
 #
 
 # platform-specific options

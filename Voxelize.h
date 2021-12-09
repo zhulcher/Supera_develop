@@ -10,7 +10,8 @@
 #define LARCV2_VOXELIZE_H
 
 #include <vector>
-#include "EDepSim/TG4Event.h"
+#include "TG4HitSegment.h"
+#include "geometry.h"
 
 #ifdef __has_include
 #if __has_include("larcv/core/DataFormat/Particle.h")
@@ -43,7 +44,7 @@ namespace larcv
 
 
 
-  /// Split an edep-sim TG4HitSegment true energy deposit into voxels
+  /// Split an EDEP TG4HitSegment true energy deposit into voxels
   ///
   /// \param[in]  hitSegment   The TG4HitSegment to operate on
   /// \param[in]  meta         Metadata about the voxel array
@@ -54,7 +55,7 @@ namespace larcv
              const larcv::Voxel3DMeta &meta,
              std::vector <larcv::Particle> &particles);
 
-  /// Split an edep-sim TG4HitSegment true energy deposit into voxels
+  /// Split an EDEP TG4HitSegment true energy deposit into voxels
   /// (same as above, but when no Particles' energy deposits are to be updated)
   /// \param[in]  hitSegment   The TG4HitSegment to operate on
   /// \param[in]  meta         Metadata about the voxel array
@@ -74,12 +75,11 @@ namespace larcv
   /// \param exitPoint   Computed exit point of the line segment from the box, if any
   /// \return            Number of intersections (will be 0, 1, or 2)
   template <typename T>
-  char Intersections(const larcv::AABBox<T> & bbox,
-                     const TVector3 & startPoint,
-                     const TVector3 & stopPoint,
-                     larcv::Vec3<T> & entryPoint,
-                     larcv::Vec3<T> & exitPoint);
-
+  char Intersections(const larcv::AABBox<T> &bbox,
+                     const larcv::Vec3d &startPoint,
+                     const larcv::Vec3d &stopPoint,
+                     larcv::Vec3<T> &entryPoint,
+                     larcv::Vec3<T> &exitPoint);
 }
 
 #endif //LARCV2_VOXELIZE_H

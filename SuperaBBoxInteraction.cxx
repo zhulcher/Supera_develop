@@ -2,29 +2,14 @@
 #define __SUPERABBOXINTERACTION_CXX__
 
 #include "SuperaBBoxInteraction.h"
-#include "GenRandom.h"
 #include "BBox.h"
+#include <random>
 
-#ifdef __has_include
-#if __has_include("larcv/core/DataFormat/Particle.h")
-#include "larcv/core/DataFormat/EventParticle.h"
-#include "larcv/core/DataFormat/EventVoxel3D.h"
-
-#elif __has_include("larcv3/core/dataformat/Particle.h")
-#include "larcv3/core/dataformat/EventParticle.h"
-#include "larcv3/core/dataformat/Point.h"
-#include "larcv3/core/dataformat/EventSparseTensor.h"
-#include "larcv3/core/dataformat/EventSparseCluster.h"
-#define larcv larcv3
-#endif
-#endif
+std::mt19937 gen(12349876); // Standard mersenne_twister_engine seeded with rd()
+std::uniform_real_distribution<> dis(0.0, 1.0);
 
 namespace larcv
 {
-  #if __has_include("larcv3/core/dataformat/Particle.h")
-  typedef ImageMeta<3> Voxel3DMeta;
-  typedef EventSparseCluster<3> EventClusterVoxel3D;
-  #endif
 
   static SuperaBBoxInteractionProcessFactory __global_SuperaBBoxInteractionProcessFactory__;
 
@@ -149,7 +134,7 @@ namespace larcv
     size_t xnum = _xlen / _xvox;
     size_t ynum = _ylen / _yvox;
     size_t znum = _zlen / _zvox;
-    larcv::Voxel3DMeta meta;
+    IM meta;
     #if __has_include("larcv/core/DataFormat/Particle.h")
     meta.set(min_pt.x, min_pt.y, min_pt.z, max_pt.x, max_pt.y, max_pt.z, xnum, ynum, znum);
     #elif __has_include("larcv3/core/dataformat/Particle.h")
@@ -165,22 +150,34 @@ namespace larcv
     // Create Cluster3D
     for (auto const &name : _cluster3d_labels)
     {
+      auto &cluster3d = mgr.get_data<ECV3D>(name);
       #if __has_include("larcv/core/DataFormat/Particle.h")
-      auto &cluster3d = mgr.get_data<larcv::EventClusterVoxel3D>(name);
+      newmeta_clus(&cluster3d, meta);
       #elif __has_include("larcv3/core/dataformat/Particle.h")
-      auto &cluster3d = mgr.get_data<larcv::SparseCluster3D>(name);
+      {
+        for (size_t i = 0; i < cluster3d.size(); i++)
+        {
+          cluster3d.at(i).meta(meta);
+        }
+      }
       #endif
-      cluster3d.meta(meta);
+      
     }
     // Create Tensor3D
     for (auto const &name : _tensor3d_labels)
     {
+      auto &tensor3d = mgr.get_data<EST3D>(name);
       #if __has_include("larcv/core/DataFormat/Particle.h")
-      auto &tensor3d = mgr.get_data<larcv::EventSparseTensor3D>(name);
+      newmeta_tens(&tensor3d, meta);
       #elif __has_include("larcv3/core/dataformat/Particle.h")
-      auto &tensor3d = mgr.get_data<larcv::SparseTensor3D>(name);
+      {
+        for (size_t i = 0; i < tensor3d.size(); i++)
+        {
+          tensor3d.at(i).meta(meta);
+        }
+      }
       #endif
-      tensor3d.meta(meta);
+      
     }
     return true;
   }
@@ -290,8 +287,8 @@ namespace larcv
     // see if box location can be randomized
     if ((max_pt.x - min_pt.x) < _xlen)
     {
-      double xshift = supera::GenRandom::get().Flat(0, _xlen - (max_pt.x - min_pt.x));
-      xshift *= (supera::GenRandom::get().Flat(-1., 1.) > 0. ? 1. : -1.);
+      double xshift = dis(gen)*(_xlen - (max_pt.x - min_pt.x));
+      xshift *= (((dis(gen)*2)-1) > 0. ? 1. : -1.);
       if (xshift > 0)
       {
         max_pt.x += xshift;
@@ -305,8 +302,8 @@ namespace larcv
     }
     if ((max_pt.y - min_pt.y) < _ylen)
     {
-      double yshift = supera::GenRandom::get().Flat(0, _ylen - (max_pt.y - min_pt.y));
-      yshift *= (supera::GenRandom::get().Flat(-1., 1.) > 0. ? 1. : -1.);
+      double yshift = dis(gen)*(_ylen - (max_pt.y - min_pt.y));
+      yshift *= (((dis(gen)*2)-1) > 0. ? 1. : -1.);
       if (yshift > 0)
       {
         max_pt.y += yshift;
@@ -320,8 +317,8 @@ namespace larcv
     }
     if ((max_pt.z - min_pt.z) < _zlen)
     {
-      double zshift = supera::GenRandom::get().Flat(0, _zlen - (max_pt.z - min_pt.z));
-      zshift *= (supera::GenRandom::get().Flat(-1., 1.) > 0. ? 1. : -1.);
+      double zshift = dis(gen)*(_zlen - (max_pt.z - min_pt.z));
+      zshift *= (((dis(gen)*2)-1)> 0. ? 1. : -1.);
       if (zshift > 0)
       {
         max_pt.z += zshift;

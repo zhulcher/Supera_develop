@@ -2,14 +2,10 @@
 #define __SUPERAG4Trajectory_CXX__
 
 #include "SuperaG4Trajectory.h"
-#include "GenRandom.h"
 #include "geometry.h"
 #include "raybox.h"
 
 namespace larcv {
-  #if __has_include("larcv3/core/dataformat/Particle.h")
-  typedef ImageMeta<3> Voxel3DMeta;
-  #endif
 
   static SuperaG4TrajectoryProcessFactory __global_SuperaG4TrajectoryProcessFactory__;
 
@@ -33,12 +29,11 @@ namespace larcv {
     SuperaBase::process(mgr);
 
     auto evt = this->GetEvent();
+    auto ev_cluster3d = get_cluster_pointer(mgr, "cluster3d", _cluster3d_producer);
 
-      #if __has_include("larcv3/core/dataformat/Particle.h")
-    auto ev_cluster3d = std::dynamic_pointer_cast<SparseCluster3D>(mgr.get_data("cluster3d", _cluster3d_producer));
+    #if __has_include("larcv3/core/dataformat/Particle.h")
     auto ev_particles = std::dynamic_pointer_cast<EventParticle>(mgr.get_data("particle", _particle_producer));
     #elif __has_include("larcv/core/DataFormat/Particle.h")
-    auto ev_cluster3d = (EventClusterVoxel3D *)(mgr.get_data("cluster3d", _cluster3d_producer));
     auto ev_particles = (EventParticle*)(mgr.get_data("particle",_particle_producer));
     #endif
 
@@ -49,7 +44,7 @@ namespace larcv {
     for(auto const& traj : evt->Trajectories) {
       auto part = this->MakeParticle(traj);
       part.id(ev_particles->as_vector().size());
-      auto vs = this->MakeVoxelSet(traj,ev_cluster3d->meta(),part);
+      auto vs = this->MakeVoxelSet(traj, getmeta_cluster_2(ev_cluster3d), part);
       LARCV_INFO() << "Track ID " << part.track_id() << " PDG " << part.pdg_code() << " ... " 
       << "[" << part.first_step().x() << "," << part.first_step().y() << "," << part.first_step().z() << "] => "
       << "[" << part.last_step().x() << "," << part.last_step().y() << "," << part.last_step().z() << "]" << std::endl;
@@ -62,12 +57,8 @@ namespace larcv {
     ev_particles->emplace(std::move(part_v));
     larcv::VoxelSetArray vsa;
     vsa.emplace(std::move(vs_v));
-    #if __has_include("larcv3/core/dataformat/Particle.h")
-    ev_cluster3d->memplace(std::move(vsa),ev_cluster3d->meta());
-    #elif __has_include("larcv/core/DataFormat/Particle.h")
-    ev_cluster3d->emplace(std::move(vsa),ev_cluster3d->meta());
-    #endif
-    
+    ev_cluster3d->emplace(std::move(vsa), getmeta_cluster_2(ev_cluster3d));
+
     return true;
   }
 
@@ -125,11 +116,11 @@ namespace larcv {
 
 
   larcv::VoxelSet SuperaG4Trajectory::MakeVoxelSet(const ::TG4Trajectory& trj, 
-    const larcv::Voxel3DMeta& meta,
+    const IM& meta,
     larcv::Particle& part)
   {
     larcv::VoxelSet vs;
-    double mass2 = trj.GetInitialMomentum().M2();
+    double mass2 = trj.GetInitialMomentum().Mag2();
     const double epsilon = 1.e-4;
     double dist_travel = 0.;
     double energy_deposit = 0.;
@@ -152,8 +143,8 @@ namespace larcv {
       double tstart = pos_start.T();
       double tend   = pos_end.T();
 
-      larcv::Vec3d pt0(pos_start);
-      larcv::Vec3d pt1(pos_end);
+      larcv::Vec3d pt0(pos_start.Vect());
+      larcv::Vec3d pt1(pos_end.Vect());
       // change unit to cm
       pt0 /= 10.;
       pt1 /= 10.;

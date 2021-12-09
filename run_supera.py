@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
-
 from __future__ import print_function
-from past.builtins import xrange
-import ROOT, sys
-from ROOT import std, TChain
-from larcv import larcv
+import sys
+from ROOT import TChain
+if sys.version_info.major == 2:
+	from past.builtins import xrange
+if sys.version_info.major == 3:
+	xrange=range
+from larcv import larcv3
+
+
 
 if len(sys.argv) < 2:
    print ('Usage: python',sys.argv[0],'CONFIG_FILE [LARCV_FILE1 LARCV_FILE2 ...]')

@@ -17,7 +17,7 @@
 //#ifndef __CLING__
 
 #include "SuperaBase.h"
-#include "EDepSim/TG4Event.h"
+#include "TG4Trajectory.h"
 #ifdef __has_include
 #if __has_include("larcv/core/DataFormat/Particle.h")
 #include "larcv/core/DataFormat/EventParticle.h"
@@ -32,7 +32,7 @@
 #endif
 
 // forward declarations
-class TVector3;
+//class TVector3;
 
 namespace larcv {
 

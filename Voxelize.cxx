@@ -3,8 +3,7 @@
 #include <numeric>
 
 #include "SuperaG4HitSegment.h"
-#include "GenRandom.h"
-#include "geometry.h"
+//#include "geometry.h"
 #include "raybox.h"
 
 namespace larcv
@@ -35,10 +34,12 @@ namespace larcv
         #endif
     LARCV_SDEBUG() <<"World: " << box.bounds[0] << " => " << box.bounds[1] << std::endl;
 
-    TVector3 start = hitSegment.GetStart().Vect();
-    TVector3 end = hitSegment.GetStop().Vect();
-    start *= 0.1;  // convert unit to cm
-    end *= 0.1;
+    Vec3d start = hitSegment.GetStart().Vect();
+    Vec3d end = hitSegment.GetStop().Vect();
+    start*=.1;
+    end*=.1;
+      // convert unit to cm
+ 
 
     const auto FindParticle = [&particles](int trackId) -> larcv::Particle*
     {
@@ -57,7 +58,7 @@ namespace larcv
     //  trackId = hitSegment.GetPrimaryId();
     else
     {
-      LARCV_SWARNING() << "Could not determine which GEANT track ID to assign edep-sim energy to!" << std::endl;
+      LARCV_SWARNING() << "Could not determine which GEANT track ID to assign EDEP energy to!" << std::endl;
       std::stringstream trks;
       std::for_each(std::begin(hitSegment.Contrib), std::end(hitSegment.Contrib),
                     [&trks](const int trk) { trks << " " << trk; });
@@ -67,9 +68,9 @@ namespace larcv
     auto particle = FindParticle(trackId);
 
     LARCV_SDEBUG() << "Voxelizing TG4HitSegment for GEANT track " << trackId
-                 << " from (" << start.x() << "," << start.y() << "," << start.z() << ")"
-                 << " to (" << end.x() << "," << end.y() << "," << end.z() << ")"
-                 << ", length = " << (end - start).Mag() << " cm"
+                 << " from (" << start.x << "," << start.y << "," << start.z << ")"
+                 << " to (" << end.x << "," << end.y << "," << end.z << ")"
+                 << ", length = " << (end - start).length() << " cm"
                  << std::endl;
 
     larcv::Vec3d pt0, pt1;
@@ -196,13 +197,13 @@ namespace larcv
 
   template <typename T>
   char Intersections(const AABBox<T> &bbox,
-                     const TVector3 &startPoint,
-                     const TVector3 &stopPoint,
+                     const Vec3d &startPoint,
+                     const Vec3d &stopPoint,
                      Vec3<T> &entryPoint,
                      Vec3<T> &exitPoint)
   {
-    TVector3 displVec = (stopPoint - startPoint);
-    TVector3 dir = displVec.Unit();
+    Vec3d displVec = (stopPoint - startPoint);
+    Vec3d dir = displVec*(1/(displVec.length()));
     larcv::Ray<T> ray(startPoint, dir);
 
     bool startContained = bbox.contain(startPoint);
@@ -221,9 +222,9 @@ namespace larcv
       // which may result in intersections beyond our segment of interest
       if (cross > 0)
       {
-        if ((!startContained && t0 < 0) || t0 > displVec.Mag())
+        if ((!startContained && t0 < 0) || t0 > displVec.length())
           cross--;
-        if (t1 < 0 || t1 > displVec.Mag())
+        if (t1 < 0 || t1 > displVec.length())
           cross--;
       }
 
@@ -239,8 +240,8 @@ namespace larcv
 
       LARCV_SDEBUG() << "Number of crossings=" << cross
                     << " for bounding box " << bbox.bounds[0] << "-" << bbox.bounds[1]
-                    << " and ray between " << "(" << startPoint.x() << "," << startPoint.y() << "," << startPoint.z() << ")"
-                    << " and (" <<  stopPoint.x() << "," << stopPoint.y() << "," << stopPoint.z() << ")" << std::endl;
+                    << " and ray between " << "(" << startPoint.x << "," << startPoint.y << "," << startPoint.z << ")"
+                    << " and (" <<  stopPoint.x << "," << stopPoint.y << "," << stopPoint.z << ")" << std::endl;
       if (cross > 0)
       {
         LARCV_SDEBUG() << "Start point contained?: " << startContained << std::endl;
@@ -255,8 +256,8 @@ namespace larcv
       {
         LARCV_SERROR() << "Unexpected number of crossings (" << cross << ")"
                       << " for bounding box and ray between "
-                      << "(" << startPoint.x() << "," << startPoint.y() << "," << startPoint.z() << ")"
-                      << " and (" <<  stopPoint.x() << "," << stopPoint.y() << "," << stopPoint.z() << ")" << std::endl;
+                      << "(" << startPoint.x << "," << startPoint.y << "," << startPoint.z << ")"
+                      << " and (" <<  stopPoint.x << "," << stopPoint.y << "," << stopPoint.z << ")" << std::endl;
         LARCV_SERROR() << "Start point contained?: " << startContained << ".  Stop point contained?: " << stopContained << std::endl;
       }
 
@@ -268,10 +269,8 @@ namespace larcv
 
   // instantiate the template for the type(s) we care about
   template char Intersections(const AABBox<double> &bbox,
-                              const TVector3 &startPoint,
-                              const TVector3 &stopPoint,
+                              const Vec3d &startPoint,
+                              const Vec3d &stopPoint,
                               Vec3d &entryPoint,
                               Vec3d &exitPoint);
-
-
 }

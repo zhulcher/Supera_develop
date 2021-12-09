@@ -106,23 +106,8 @@
 
 #include <numeric>
 
-#ifdef __has_include
-#if __has_include("larcv/core/DataFormat/Particle.h")
-#include "larcv/core/DataFormat/EventParticle.h"
-#include "larcv/core/DataFormat/EventVoxel3D.h"
-#include "larcv/core/DataFormat/Particle.h"
-typedef EventClusterVoxel3D ECV3D;
-typedef EventSparseTensor3D EST3D;
-#elif __has_include("larcv3/core/dataformat/Particle.h")
-#include "larcv3/core/dataformat/EventParticle.h"
-#include "larcv3/core/dataformat/Voxel.h"
-#include "larcv3/core/dataformat/Particle.h"
-#define larcv larcv3
-#endif
-#endif
-
-
 #include "Voxelize.h"
+
 
 namespace larcv
 {
@@ -175,17 +160,31 @@ namespace larcv
     SuperaBase::process(mgr);
 
 
-    larcv::Voxel3DMeta meta3d;
+    IM meta3d;
 
+    #if __has_include("larcv/core/DataFormat/Particle.h")
     // load the voxel metadata
     if(!_ref_meta3d_cluster3d.empty()) {
-      auto const &ev_cluster3d = mgr.get_data<larcv::ECV3D>(_ref_meta3d_cluster3d);
-      meta3d = ev_cluster3d.meta();
+      auto const &ev_cluster3d = mgr.get_data<ECV3D>(_ref_meta3d_cluster3d);
+      meta3d = getmeta_cluster(ev_cluster3d);
     }
     else if(!_ref_meta3d_tensor3d.empty()) {
-      auto const &ev_tensor3d = mgr.get_data<larcv::EST3D>(_ref_meta3d_tensor3d);
+      auto const &ev_tensor3d = mgr.get_data<EST3D>(_ref_meta3d_tensor3d);
       meta3d = ev_tensor3d.meta();
     }
+    #elif __has_include("larcv3/core/dataformat/Particle.h")
+    // load the voxel metadata
+    if(!_ref_meta3d_cluster3d.empty()) {
+      auto const &ev_cluster3d = mgr.get_data<ECV3D>(_ref_meta3d_cluster3d);
+      meta3d = getmeta_cluster(ev_cluster3d);
+    }
+    else if(!_ref_meta3d_tensor3d.empty()) {
+      auto const &ev_tensor3d = mgr.get_data<EST3D>(_ref_meta3d_tensor3d);
+      meta3d = ev_tensor3d.sparse_tensor(0).meta();
+    }
+    #endif
+
+    
 
     // Build MCParticle List.
     // Note that we made Particles in SuperaG4HitSegment.  We'll use those here.
@@ -346,30 +345,25 @@ namespace larcv
     // now loop over to create VoxelSet for compton/photoelectron
     std::vector<larcv::Particle> part_v;
     part_v.resize(output2trackid.size());
-    #if __has_include("larcv3/core/dataformat/Particle.h")
-    auto event_cluster = std::dynamic_pointer_cast<ECV3D>(mgr.get_data("cluster3d", _output_label));
-    auto event_cluster_he = std::dynamic_pointer_cast<ECV3D>(mgr.get_data("cluster3d", _output_label + "_highE"));
-    auto event_cluster_le = std::dynamic_pointer_cast<ECV3D>(mgr.get_data("cluster3d", _output_label + "_lowE"));
-    auto event_leftover = std::dynamic_pointer_cast<EST3D>(mgr.get_data("sparse3d", _output_label + "_leftover"));
-    auto event_cindex = std::dynamic_pointer_cast<EST3D>(mgr.get_data("sparse3d", _output_label + "_index"));
-    #elif __has_include("larcv/core/DataFormat/Particle.h")
-    auto event_cluster = (ECV3D *)(mgr.get_data("cluster3d", _output_label));
-    auto event_cluster_he = (ECV3D *)(mgr.get_data("cluster3d", _output_label + "_highE"));
-    auto event_cluster_le = (ECV3D *)(mgr.get_data("cluster3d", _output_label + "_lowE"));
-    auto event_leftover = (EST3D *) (mgr.get_data("sparse3d", _output_label + "_leftover"));
-    auto event_cindex = (EST3D *) (mgr.get_data("sparse3d", _output_label + "_index"));
-    #endif
+    auto event_cluster = get_cluster_pointer(mgr, "cluster3d", _output_label);
+    auto event_cluster_he = get_cluster_pointer(mgr, "cluster3d", _output_label + "_highE");
+    auto event_cluster_le = get_cluster_pointer(mgr, "cluster3d", _output_label + "_lowE");
+    auto event_leftover = get_tensor_pointer(mgr, "sparse3d", _output_label + "_leftover");
+    auto event_cindex = get_tensor_pointer(mgr, "sparse3d", _output_label + "_index");
+    newmeta_clus(event_cluster,meta3d);
+    newmeta_clus(event_cluster_he,meta3d);
+    newmeta_clus(event_cluster_le,meta3d);
+    newmeta_tens(event_leftover,meta3d);
+    newmeta_tens(event_cindex,meta3d);
+
     
     // set meta for all
-    event_cluster->meta(meta3d);
-    event_cluster_he->meta(meta3d);
-    event_cluster_le->meta(meta3d);
-    event_leftover->meta(meta3d);
+    
 
 
     // Create cluster index tensor to help back-track semantic source particle
     
-    event_cindex->meta(meta3d);
+    
     larcv::VoxelSet cid_vs;
     cid_vs.reserve(total_vs_size);
 
@@ -386,8 +380,15 @@ namespace larcv
                                  cid_vs);
 
     // create particle ID vs ... overlapped voxel gets higher id number
+    
+
+#if __has_include("larcv3/core/dataformat/Particle.h")
+    auto const &main_vs = event_cluster_he->at(0).as_vector();
+    auto const &lowe_vs = event_cluster_le->at(0).as_vector();
+#elif __has_include("larcv/core/DataFormat/Particle.h")
     auto const &main_vs = event_cluster_he->as_vector();
     auto const &lowe_vs = event_cluster_le->as_vector();
+#endif
 
     // Count output voxel count and x-check
     size_t output_vs_size = 0;
@@ -410,13 +411,8 @@ namespace larcv
       this->CheckParticleValidity(part_grp_v, part_v);
 
     // create semantic output in 3d
-    #if __has_include("larcv3/core/dataformat/Particle.h")
-    auto event_segment = std::dynamic_pointer_cast<EST3D>(mgr.get_data("sparse3d", _output_label + "_semantics"));
-    #elif __has_include("larcv/core/DataFormat/Particle.h")
-    auto event_segment = (EST3D *) (mgr.get_data("sparse3d", _output_label + "_semantics"));
-    #endif
-    
-    event_segment->meta(meta3d);
+    auto event_segment = get_tensor_pointer(mgr,"sparse3d", _output_label + "_semantics");
+    newmeta_tens(event_segment,meta3d);
     larcv::VoxelSet semantic_vs;
     semantic_vs.reserve(total_vs_size);
 
@@ -454,8 +450,15 @@ namespace larcv
     }
     // store
     assert(semantic_vs.size() == cid_vs.size());
+
+#if __has_include("larcv3/core/dataformat/Particle.h")
+    event_segment->emplace(std::move(semantic_vs), std::move(meta3d));
+    event_cindex->emplace(std::move(cid_vs), std::move(meta3d));
+#elif __has_include("larcv/core/DataFormat/Particle.h")
     event_segment->emplace(std::move(semantic_vs), meta3d);
     event_cindex->emplace(std::move(cid_vs), meta3d);
+#endif
+ 
 
     // Store output
     #if __has_include("larcv3/core/dataformat/Particle.h")
@@ -517,7 +520,7 @@ namespace larcv
   // =============================================================================================
 
   // ------------------------------------------------------
-  void SuperaMCParticleCluster::AnalyzeSimEnergyDeposit(const larcv::Voxel3DMeta& meta,
+  void SuperaMCParticleCluster::AnalyzeSimEnergyDeposit(const IM& meta,
                                                         std::vector<supera::ParticleGroup>& part_grp_v)
   {
     const auto & ev = this->GetEvent();
@@ -542,12 +545,12 @@ namespace larcv
                       [&trks](const int trk) { trks << " " << trk; });
         LARCV_DEBUG() << "   Recording edep from GEANT trackids" << trks.str()
                       << ": total Edep=" << sedep.EnergyDeposit
-                      << ", start pos=(" << sedep.Start.Vect().X()*0.1 << ","
-                                         << sedep.Start.Vect().Y()*0.1 << ","
-                                         << sedep.Start.Vect().Z()*0.1 << ")"
-                      << ", stop pos=(" << sedep.Stop.Vect().X()*0.1 << ","
-                                        << sedep.Stop.Vect().Y()*0.1 << ","
-                                        << sedep.Stop.Vect().Z()*0.1 << ")"
+                      << ", start pos=(" << sedep.Start.Vect().x*0.1 << ","
+                                         << sedep.Start.Vect().y*0.1 << ","
+                                         << sedep.Start.Vect().z*0.1 << ")"
+                      << ", stop pos=(" << sedep.Stop.Vect().x*0.1 << ","
+                                        << sedep.Stop.Vect().y*0.1 << ","
+                                        << sedep.Stop.Vect().z*0.1 << ")"
                       << std::endl;
         sedep_counter++;
 
@@ -828,21 +831,13 @@ namespace larcv
       }
     }
   }
-    #if __has_include("larcv/core/DataFormat/Particle.h")
-    void SuperaMCParticleCluster::BuildLEScatterClusters(const std::vector<larcv::Particle> &particles,
+
+  void SuperaMCParticleCluster::BuildLEScatterClusters(const std::vector<larcv::Particle> &particles,
                                                        const std::vector<int> &trackid2index,
                                                        std::vector<supera::ParticleGroup> &part_grp_v,
                                                        const std::vector<int> &trackid2output,
-                                                       ECV3D *event_cluster,
-                                                       ECV3D *event_cluster_le, VoxelSet &cid_vs) const
-    #elif __has_include("larcv3/core/dataformat/Particle.h")
-        void SuperaMCParticleCluster::BuildLEScatterClusters(const std::vector<larcv::Particle> &particles,
-                                                       const std::vector<int> &trackid2index,
-                                                       std::vector<supera::ParticleGroup> &part_grp_v,
-                                                       const std::vector<int> &trackid2output,
-                                                       std::shared_ptr<larcv3::SparseCluster<3> >event_cluster,
-                                                       std::shared_ptr<larcv3::SparseCluster<3> >event_cluster_le, VoxelSet &cid_vs) const
-    #endif
+                                                       ECV3Ds event_cluster,
+                                                       ECV3Ds event_cluster_le, VoxelSet &cid_vs) const
   // ------------------------------------------------------
   {
     for (auto & grp : part_grp_v)
@@ -900,40 +895,29 @@ namespace larcv
       */
 
       // fill 3D cluster
-      auto &vs_le = event_cluster_le->writeable_voxel_set(output_index);
-      auto &vs = event_cluster->writeable_voxel_set(output_index);
+      emplace_writeable_voxel(event_cluster_le, output_index, grp.vs);
+      emplace_writeable_voxel(event_cluster, output_index, grp.vs);
       for (auto const &vox : grp.vs.as_vector())
       {
-        vs_le.emplace(vox.id(), vox.value(), true);
-        vs.emplace(vox.id(), vox.value(), true);
         cid_vs.emplace(vox.id(), output_index, false);
       }
       grp.vs.clear_data();
     }
   }
-    #if __has_include("larcv/core/DataFormat/Particle.h")
-    void SuperaMCParticleCluster::BuildOutputClusters(const std::vector<int> &output2trackid,
-                                               ECV3D *event_cluster,
-                                               ECV3D *event_cluster_he,
-                                               ECV3D *event_cluster_le,
-                                               VoxelSet &cid_vs /* this comes in empty */,
-                                               std::vector<supera::ParticleGroup> &part_grp_v,
-                                               std::vector<larcv::Particle> &part_v /* this comes in empty */) const
-    #elif __has_include("larcv3/core/dataformat/Particle.h")
-        void SuperaMCParticleCluster::BuildOutputClusters(const std::vector<int> &output2trackid,
-                                               std::shared_ptr<larcv3::SparseCluster<3> >event_cluster,
-                                               std::shared_ptr<larcv3::SparseCluster<3> >event_cluster_he,
-                                               std::shared_ptr<larcv3::SparseCluster<3> >event_cluster_le,
-                                               VoxelSet &cid_vs /* this comes in empty */,
-                                               std::vector<supera::ParticleGroup> &part_grp_v,
-                                               std::vector<larcv::Particle> &part_v /* this comes in empty */) const
-    #endif
+
+  void SuperaMCParticleCluster::BuildOutputClusters(const std::vector<int> &output2trackid,
+                                                    ECV3Ds event_cluster,
+                                                    ECV3Ds event_cluster_he,
+                                                    ECV3Ds event_cluster_le,
+                                                    VoxelSet &cid_vs /* this comes in empty */,
+                                                    std::vector<supera::ParticleGroup> &part_grp_v,
+                                                    std::vector<larcv::Particle> &part_v /* this comes in empty */) const
   // ------------------------------------------------------
   
   {
-    event_cluster->resize(output2trackid.size());
-    event_cluster_he->resize(output2trackid.size());
-    event_cluster_le->resize(output2trackid.size());
+    myresize(event_cluster,output2trackid.size());
+    myresize(event_cluster_he,output2trackid.size());
+    myresize(event_cluster_le,output2trackid.size());
     for (size_t index = 0; index < output2trackid.size(); ++index)
     {
       int trackid = output2trackid[index];
@@ -985,12 +969,12 @@ namespace larcv
       std::swap(grp.part, part_v[index]);
       grp.part = part_v[index];
       // fill 3d cluster
-      event_cluster->writeable_voxel_set(index) = grp.vs;
+      set_writeable_voxel(event_cluster, index, grp.vs);
       if (semantic != kShapeLEScatter)
-        event_cluster_he->writeable_voxel_set(index) = grp.vs;
+        set_writeable_voxel(event_cluster_he, index, grp.vs);
       else
       {
-        event_cluster_le->writeable_voxel_set(index) = grp.vs;
+        set_writeable_voxel(event_cluster_le, index, grp.vs);
         for (auto const &vox : grp.vs.as_vector())
           cid_vs.emplace(vox.id(), index, false);
       }
@@ -998,17 +982,11 @@ namespace larcv
       grp.valid = false;
     }
   }
-    #if __has_include("larcv/core/DataFormat/Particle.h")
-    void SuperaMCParticleCluster::ConsolidateLeftoverVoxels(const Voxel3DMeta &meta3d,
+
+  void SuperaMCParticleCluster::ConsolidateLeftoverVoxels(const IM &meta3d,
                                                           const std::vector<supera::ParticleGroup> &part_grp_v,
-                                                          size_t total_vs_size, larcv::EST3D *event_leftover,
+                                                          size_t total_vs_size, EST3Ds event_leftover,
                                                           size_t output_vs_size) const
-    #elif __has_include("larcv3/core/dataformat/Particle.h")
-        void SuperaMCParticleCluster::ConsolidateLeftoverVoxels(const Voxel3DMeta &meta3d,
-                                                              const std::vector<supera::ParticleGroup> &part_grp_v,
-                                                              size_t total_vs_size, std::shared_ptr<larcv3::SparseTensor<3> > event_leftover,
-                                                              size_t output_vs_size) const
-    #endif
   // ------------------------------------------------------
   
   {
@@ -1055,7 +1033,13 @@ namespace larcv
       }
       LARCV_INFO() << "... " << ctr << " particles" << std::endl;
     }
+    #if __has_include("larcv3/core/dataformat/Particle.h")
+
+    emplace_tens(event_leftover, leftover_vs, meta3d);
+    #elif __has_include("larcv/core/DataFormat/Particle.h")
     event_leftover->emplace(std::move(leftover_vs), meta3d);
+    #endif
+    
   }
 
   // ------------------------------------------------------
@@ -1186,7 +1170,7 @@ namespace larcv
 
   // ------------------------------------------------------
   void SuperaMCParticleCluster::FixFirstStepInfo(std::vector<supera::ParticleGroup> &part_grp_v,
-                                                 const Voxel3DMeta &meta3d,
+                                                 const IM &meta3d,
                                                  const std::vector<int> &output2trackid) const
   {
     for (int output_index : output2trackid)
@@ -1202,7 +1186,6 @@ namespace larcv
       for (auto const &vox : grp.vs.as_vector())
       {
         auto const pt = meta3d.position(vox.id());
-        #ifdef __has_include
         #if __has_include("larcv/core/DataFormat/Particle.h")
         double dist = pt.squared_distance(vtx);
         if (dist > min_dist)
@@ -1216,7 +1199,7 @@ namespace larcv
         min_dist = dist;
         min_pt = supera::Point3D(pt.at(0), pt.at(1), pt.at(2));
         #endif
-        #endif
+        
       }
       if (min_dist > (sqrt(3.) + 1.e-3)) grp.part.first_step(kINVALID_DOUBLE, kINVALID_DOUBLE, kINVALID_DOUBLE,kINVALID_DOUBLE);
       else grp.part.first_step(min_pt.x, min_pt.y,min_pt.z, grp.part.position().t());
@@ -1742,7 +1725,7 @@ namespace larcv
   }
 
   // ------------------------------------------------------
-  bool SuperaMCParticleCluster::IsTouching(const Voxel3DMeta& meta, const VoxelSet& vs1, const VoxelSet& vs2) const
+  bool SuperaMCParticleCluster::IsTouching(const IM& meta, const VoxelSet& vs1, const VoxelSet& vs2) const
   {
 
     bool touching = false;
@@ -1895,7 +1878,7 @@ namespace larcv
 } // SuperaMCParticleCluster::MergeShowerDeltas()
 
   // ------------------------------------------------------
-  void SuperaMCParticleCluster::MergeShowerFamilyTouching(const larcv::Voxel3DMeta& meta,
+  void SuperaMCParticleCluster::MergeShowerFamilyTouching(const IM& meta,
                                                           std::vector<supera::ParticleGroup>& part_grp_v)
   {
     // Merge touching shower fragments
@@ -2016,7 +1999,7 @@ namespace larcv
   } // SuperaMCParticleCluster::MergeShowerIonizations()
 
   // ------------------------------------------------------
-  void SuperaMCParticleCluster::MergeShowerTouching(const larcv::Voxel3DMeta& meta,
+  void SuperaMCParticleCluster::MergeShowerTouching(const IM& meta,
                                                     std::vector<supera::ParticleGroup>& part_grp_v,
                                                     const std::vector<larcv::Particle> & particles)
   {
@@ -2121,7 +2104,7 @@ namespace larcv
   } // SuperaMCParticleCluster::MergeShowerTouching()
 
   // ------------------------------------------------------
-  void SuperaMCParticleCluster::MergeShowerTouchingLEScatter(const larcv::Voxel3DMeta& meta,
+  void SuperaMCParticleCluster::MergeShowerTouchingLEScatter(const IM& meta,
                                                              std::vector<supera::ParticleGroup>& part_grp_v,
                                                              const std::vector<larcv::Particle> & particles)
   {

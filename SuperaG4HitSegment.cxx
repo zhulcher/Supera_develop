@@ -4,13 +4,10 @@
 #include <numeric>
 #include <unordered_map>
 
-
-
 #include "geometry.h"
-#include "GenRandom.h"
 #include "raybox.h"
 #include "SuperaG4HitSegment.h"
-
+#include "larcv_interface.h"
 #include "Voxelize.h"
 
 #if __has_include("larcv3/core/dataformat/Particle.h")
@@ -52,14 +49,13 @@ namespace larcv {
     auto evt = this->GetEvent();
 
     #if __has_include("larcv3/core/dataformat/Particle.h")
-    auto ev_hittensor = std::dynamic_pointer_cast<SparseTensor3D>(mgr.get_data("sparse3d", _sparsetensor3d_producer));
     auto ev_particles = std::dynamic_pointer_cast<EventParticle>(mgr.get_data("particle", _particle_producer));
     #elif __has_include("larcv/core/DataFormat/Particle.h")
-    auto ev_hittensor = (EventSparseTensor3D*)(mgr.get_data("sparse3d", _sparsetensor3d_producer));
     auto ev_particles = (EventParticle*)(mgr.get_data("particle",_particle_producer));
     #endif
+    auto ev_hittensor = get_tensor_pointer(mgr, "sparse3d", _sparsetensor3d_producer);
 
-    auto meta = ev_hittensor->meta();
+    auto meta = getmeta_tensor_2(ev_hittensor);
     larcv::AABBox<double> box(meta);
 
     // build a map of which primary particles go with which interaction
@@ -148,7 +144,7 @@ namespace larcv {
       {
         LARCV_DEBUG() << "   hit number: " << hitIdx << std::endl;
         auto const & hitSeg = detPair.second[hitIdx];
-        auto newVoxels = MakeVoxels(hitSeg, ev_hittensor->meta(), particles);
+        auto newVoxels = MakeVoxels(hitSeg, getmeta_tensor_2(ev_hittensor), particles);
         LARCV_DEBUG() << "    made " << newVoxels.size() << " voxels " << std::endl;
 
         FluctuateEnergy(newVoxels);
@@ -161,7 +157,7 @@ namespace larcv {
     LARCV_DEBUG() << "Made " << particles.size() << " true particles" << std::endl;
     LARCV_DEBUG() << "Made " << voxelSet.size() << " voxels, with " << voxelSet.sum() << " total" << std::endl;
     ev_particles->emplace(std::move(particles));
-    ev_hittensor->emplace(std::move(voxelSet), ev_hittensor->meta());
+    ev_hittensor->emplace(std::move(voxelSet), getmeta_tensor_2(ev_hittensor));
     LARCV_DEBUG() << "Done with event." << std::endl;
 
     return true;
@@ -183,10 +179,10 @@ namespace larcv {
     res.pdg_code(traj.GetPDGCode());
     auto const& mom = traj.GetInitialMomentum();
     res.momentum(mom.Px(),mom.Py(),mom.Pz());
-    TLorentzVector start = traj.Points.front().GetPosition();
-    start.SetVect(start.Vect() * 0.1);  // convert to cm
+    larcv::SLorentzvector start = traj.Points.front().GetPosition();
+    start.SetVect(start.Vect() * 0.1); // convert to cm
     res.position(start.X(), start.Y(), start.Z(), start.T());
-    TLorentzVector end = traj.Points.back().GetPosition();
+    larcv::SLorentzvector end = traj.Points.back().GetPosition();
     end.SetVect(end.Vect() * 0.1); // convert to cm
     res.end_position(end.X(), end.Y(), end.Z(), end.T());
 
@@ -208,8 +204,8 @@ namespace larcv {
     LARCV_DEBUG() << "   Trajectory steps:" << std::endl;
     for (std::size_t idx = 1; idx < traj.Points.size(); idx ++)
     {
-      TLorentzVector trajP1 = traj.Points[idx - 1].GetPosition();
-      TLorentzVector trajP2 = traj.Points[idx].GetPosition();
+      larcv::SLorentzvector trajP1 = traj.Points[idx - 1].GetPosition();
+      larcv::SLorentzvector trajP2 = traj.Points[idx].GetPosition();
       trajP1.SetVect(trajP1.Vect() * 0.1);  // convert units to cm
       trajP2.SetVect(trajP2.Vect() * 0.1);  // convert units to cm
 
@@ -230,8 +226,8 @@ namespace larcv {
       // and the loop will be cut off at the right place anyway.
       for (std::size_t idx = (step > 0) ? step : (traj.Points.size()-1 + step); idx < traj.Points.size(); idx += step)
       {
-        TLorentzVector trajP1 = traj.Points[idx - step].GetPosition();
-        TLorentzVector trajP2 = traj.Points[idx].GetPosition();
+        larcv::SLorentzvector trajP1 = traj.Points[idx - step].GetPosition();
+        larcv::SLorentzvector trajP2 = traj.Points[idx].GetPosition();
         trajP1.SetVect(trajP1.Vect() * 0.1);  // convert units to cm
         trajP2.SetVect(trajP2.Vect() * 0.1);  // convert units to cm
 
@@ -247,14 +243,14 @@ namespace larcv {
 
         LARCV_DEBUG() << "   --> intersects bounding box at (" << p1.x << "," << p1.y << "," << p1.z << ")" << std::endl;
         vtx.reset(new larcv::Vertex(p1.x, p1.y, p1.z,
-                                    trajP1.T() + (p2 - p1).length() / (trajP2 - trajP1).Vect().Mag() * (trajP2.T() - trajP1.T())) );
+                                    trajP1.T() + (p2 - p1).length() / (trajP2 - trajP1).Vect().length() * (trajP2.T() - trajP1.T())) );
         break;
       }
       return vtx;
     };
 
 
-    if (bbox.contain(start))
+    if (bbox.contain(start.Vect()))
       res.first_step(res.position());
     else
     {
@@ -263,7 +259,7 @@ namespace larcv {
         res.first_step(*entry);
     }
 
-    if (bbox.contain(end))
+    if (bbox.contain(end.Vect()))
       res.last_step(res.end_position());
     else
     {
@@ -276,7 +272,7 @@ namespace larcv {
 
     double distTraveled = 0;
     for (std::size_t idx = 1; idx < traj.Points.size(); idx++)
-      distTraveled += (traj.Points[idx].GetPosition().Vect() - traj.Points[idx-1].GetPosition().Vect()).Mag() * 0.1;
+      distTraveled += (traj.Points[idx].GetPosition().Vect() - traj.Points[idx-1].GetPosition().Vect()).length() * 0.1;
     res.distance_travel(distTraveled);
 
     LARCV_DEBUG() << "   Final track startpoint: " << res.first_step().dump() << std::endl;

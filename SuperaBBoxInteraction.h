@@ -18,15 +18,15 @@
 #include "SuperaBase.h"
 #include "BBox.h"
 
-#ifdef __has_include
-#if __has_include("larcv3/core/dataformat/Particle.h")
-#include "larcv3/core/dataformat/EventBBox.h"
-#include "larcv3/core/dataformat/EventParticle.h"
-#define larcv larcv3
-#endif
-#endif
+//#if __has_include("larcv3/core/dataformat/Particle.h")
+//#include "larcv3/core/dataformat/EventBBox.h"
+//#define larcv larcv3
+//#endif
 
-    namespace larcv {
+#include "larcv_interface.h"
+
+namespace larcv
+{
 
   /**
      \class SuperaBBoxInteraction

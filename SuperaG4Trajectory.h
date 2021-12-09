@@ -16,25 +16,12 @@
 //#ifndef __CINT__
 //#ifndef __CLING__
 #include "SuperaBase.h"
-#include "EDepSim/TG4Event.h"
+//#include "EDepSim/TG4Event.h" Zach
 
-#ifdef __has_include
-#if __has_include("larcv/core/DataFormat/Particle.h")
-#include "larcv/core/DataFormat/EventParticle.h"
-#include "larcv/core/DataFormat/EventVoxel3D.h"
-#elif __has_include("larcv3/core/dataformat/Particle.h")
-#include "larcv3/core/dataformat/EventParticle.h"
-#include "larcv3/core/dataformat/Voxel.h"
-#include "larcv3/core/dataformat/ImageMeta.h"
-#define larcv larcv3
-#endif
-#endif
-
+#include "larcv_interface.h"
 
 namespace larcv {
-  #if __has_include("larcv3/core/dataformat/Particle.h")
-  typedef ImageMeta<3> Voxel3DMeta;
-  #endif
+
 
   /**
      \class SuperaG4Trajectory
@@ -60,7 +47,7 @@ namespace larcv {
 
     larcv::Particle MakeParticle(const TG4Trajectory&);
 
-    larcv::VoxelSet MakeVoxelSet(const ::TG4Trajectory&, const larcv::Voxel3DMeta&,larcv::Particle&);
+    larcv::VoxelSet MakeVoxelSet(const ::TG4Trajectory&, const IM&,larcv::Particle&);
 
   private:
 
