@@ -17,10 +17,8 @@
 *.db
 *.log
 *.dat
-CMakeLists.txt
 !experiments/*/CMakeLists.txt
 FMWKInterface.*
-*.txt
 *.bin
 *.root
 build
