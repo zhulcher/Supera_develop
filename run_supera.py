@@ -6,7 +6,7 @@ if sys.version_info.major == 2:
 	from past.builtins import xrange
 if sys.version_info.major == 3:
 	xrange=range
-from larcv import larcv3
+import larcv
 
 
 
