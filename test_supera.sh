@@ -1,1 +1,1 @@
-python3 run_supera.py supera-ndlar.cfg edep.397.root
+python3 run_supera.py supera-ndlar.cfg /home/Supera/edep.397.root

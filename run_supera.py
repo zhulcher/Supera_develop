@@ -41,9 +41,12 @@ sys.stdout.flush()
 # Initialize and retrieve a list of processes that belongs to SuperaBase inherited module classes
 proc.initialize()
 supera_procs = []
+print(proc.process_names())
 for name in proc.process_names():
 	pid = proc.process_id(name)
 	module = proc.process_ptr(pid)
+	print("name:",name)
+	print(dir(module))
 	if getattr(module,'is')('Supera'):
 		print('Running a Supera module:',name)
 		supera_procs.append(pid)
