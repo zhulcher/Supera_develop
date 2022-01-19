@@ -74,9 +74,6 @@ for entry in xrange(*event_range):
 		print(pid, type(pid))
 		module = proc.process_ptr(pid)
 		print("got here7")
-		print("got here7")
-		print("got here7")
-		print("got here7")
 		module.SetEvent(ev)  # write this into pybind
 		print("got here8")
 

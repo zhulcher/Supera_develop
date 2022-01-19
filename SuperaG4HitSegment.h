@@ -17,7 +17,6 @@
 //#ifndef __CLING__
 
 #include "SuperaBase.h"
-#include "TG4Trajectory.h"
 #ifdef __has_include
 #if __has_include("larcv/core/DataFormat/Particle.h")
 #include "larcv/core/DataFormat/EventParticle.h"

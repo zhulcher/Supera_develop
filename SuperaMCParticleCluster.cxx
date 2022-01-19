@@ -162,27 +162,19 @@ namespace larcv
 
     IM meta3d;
 
+    if(!_ref_meta3d_cluster3d.empty()) {
+      auto const &ev_cluster3d = mgr.get_data<ECV3D>(_ref_meta3d_cluster3d);
+      meta3d = getmeta_cluster(ev_cluster3d);
+    }
+    else if(!_ref_meta3d_tensor3d.empty()) {
+      auto const &ev_tensor3d = mgr.get_data<EST3D>(_ref_meta3d_tensor3d);
+
     #if __has_include("larcv/core/DataFormat/Particle.h")
-    // load the voxel metadata
-    if(!_ref_meta3d_cluster3d.empty()) {
-      auto const &ev_cluster3d = mgr.get_data<ECV3D>(_ref_meta3d_cluster3d);
-      meta3d = getmeta_cluster(ev_cluster3d);
-    }
-    else if(!_ref_meta3d_tensor3d.empty()) {
-      auto const &ev_tensor3d = mgr.get_data<EST3D>(_ref_meta3d_tensor3d);
       meta3d = ev_tensor3d.meta();
-    }
     #elif __has_include("larcv3/core/dataformat/Particle.h")
-    // load the voxel metadata
-    if(!_ref_meta3d_cluster3d.empty()) {
-      auto const &ev_cluster3d = mgr.get_data<ECV3D>(_ref_meta3d_cluster3d);
-      meta3d = getmeta_cluster(ev_cluster3d);
-    }
-    else if(!_ref_meta3d_tensor3d.empty()) {
-      auto const &ev_tensor3d = mgr.get_data<EST3D>(_ref_meta3d_tensor3d);
       meta3d = ev_tensor3d.sparse_tensor(0).meta();
-    }
     #endif
+    }
 
     
 

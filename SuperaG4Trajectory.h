@@ -16,7 +16,6 @@
 //#ifndef __CINT__
 //#ifndef __CLING__
 #include "SuperaBase.h"
-//#include "EDepSim/TG4Event.h" Zach
 
 #include "larcv_interface.h"
 

@@ -34,7 +34,7 @@
 
 // FIXME(kvtsang) Temporary solution to access associations
 //#include "art/Framework/Principal/Event.h"
-#include "TG4Event.h"
+#include "EDepSim/TG4Event.h"
 
 namespace larcv {
 

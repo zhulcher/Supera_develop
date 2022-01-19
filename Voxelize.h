@@ -10,8 +10,10 @@
 #define LARCV2_VOXELIZE_H
 
 #include <vector>
-#include "TG4HitSegment.h"
+//#include "TG4HitSegment.h"
+#include "EDepSim/TG4Event.h"
 #include "geometry.h"
+
 
 #ifdef __has_include
 #if __has_include("larcv/core/DataFormat/Particle.h")
