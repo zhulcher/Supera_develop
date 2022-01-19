@@ -67,7 +67,7 @@ for entry in xrange(*event_range):
 		break
 	ev = ch.Event
 
-	#proc.set_id(ev.RunId,0,ev.EventId)
+	proc.set_id(ev.RunId,0,ev.EventId)
 	# set event pointers
 	for pid in supera_procs:
 		print("got here6")
