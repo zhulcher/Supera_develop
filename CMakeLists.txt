@@ -5,6 +5,9 @@ set(name Supera)
 file(GLOB SOURCES *.cxx)
 file(GLOB HEADERS *.h)
 
+find_package(EDepSim) #short term fix
+target_link_libraries(Supera PUBLIC EDepSim::edepsim_io) #short term fix
+
 
 
 #find_package(Geant4 REQUIRED)
@@ -22,7 +25,7 @@ add_library(${name} OBJECT ${SOURCES})
 #MINE ?????????
 #target_link_libraries(Supera PUBLIC ROOT::Physics)
 #target_link_libraries( Supera PUBLIC EDepSim::edepsim_io )
-#target_link_libraries( Supera EDepSim::edepsim )
+target_link_libraries( Supera EDepSim::edepsim )
 #target_link_libraries( Supera PUBLIC ${Geant4_LIBRARIES})
 #target_include_directories(Supera PUBLIC /app/edep/include)
 #target_include_directories(Supera PUBLIC ${PYTHON_INCLUDE_DIRS})
