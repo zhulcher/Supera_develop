@@ -16,6 +16,7 @@
 #define __LARCV3CORE_SUPERA_H__
 
 #include "SuperaLorentz.h"
+#include "SuperaBase.h"
 
 #ifndef LARCV_NO_PYBIND
 #ifdef LARCV_INTERNAL
