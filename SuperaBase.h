@@ -100,9 +100,10 @@ namespace larcv {
     ProcessBase* create(const std::string instance_name) { return new SuperaBase(instance_name); }
   };
 
-
-
 }
+
+#include <pybind11/pybind11.h>
+void init_superabase(pybind11::module m);
 
 #endif
 /** @} */ // end of doxygen group

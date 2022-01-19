@@ -44,4 +44,16 @@ namespace larcv {
 
 }
 
+void init_superabase(pybind11::module m){
+    using Class = larcv3::SuperaBase;
+    pybind11::class_<Class> superabase(m, "SuperaBase");
+    superabase.def("is", &Class::is);
+    superabase.def("SetEvent", &Class::SetEvent);
+
+    // We don't actually want to construct any instances of ProcessBase
+    // processbase.def(pybind11::init<const std::string>(), 
+                    // pybind11::arg("name")="ProcessBase");
+
+}
+
 #endif

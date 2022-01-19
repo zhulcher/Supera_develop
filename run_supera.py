@@ -5,13 +5,13 @@ from ROOT import TChain
 if sys.version_info.major == 2:
 	from past.builtins import xrange
 if sys.version_info.major == 3:
-	xrange=range
+	xrange = range
 import larcv
 
 
-
 if len(sys.argv) < 2:
-   print ('Usage: python',sys.argv[0],'CONFIG_FILE [LARCV_FILE1 LARCV_FILE2 ...]')
+   print('Usage: python', sys.argv[0],
+         'CONFIG_FILE [LARCV_FILE1 LARCV_FILE2 ...]')
    sys.exit(1)
 
 # Instantiate, configure, and ensure it's kWrite mode
@@ -25,8 +25,9 @@ if not proc.io().io_mode() == 1:
 ch = TChain('EDepSimEvents')
 if len(sys.argv) > 2:
 	for argv in sys.argv[2:]:
-		if not argv.endswith('.root'): continue
-		print('Adding input:',argv)
+		if not argv.endswith('.root'):
+			continue
+		print('Adding input:', argv)
 		ch.AddFile(argv)
 print("Chain has", ch.GetEntries(), "entries")
 #print("????", proc.batch_start_entry())
@@ -41,16 +42,22 @@ sys.stdout.flush()
 # Initialize and retrieve a list of processes that belongs to SuperaBase inherited module classes
 proc.initialize()
 supera_procs = []
-print(proc.process_names())
+
+#module = proc.process_ptr(0)
+#module = proc.process_ptr(1)
+#module = proc.process_ptr(0)
+#print("made it ")
+#print(proc.process_names())
 for name in proc.process_names():
 	pid = proc.process_id(name)
+	print(pid, type(pid))
 	module = proc.process_ptr(pid)
-	print("name:",name)
-	print(dir(module))
-	if getattr(module,'is')('Supera'):
-		print('Running a Supera module:',name)
+	#print("name:",name)
+	#print(dir(module))
+	if getattr(module, 'is')('Supera'):
+		print('Running a Supera module:', name)
 		supera_procs.append(pid)
-
+print(supera_procs)
 # Event loop
 for entry in xrange(*event_range):
 	print("considering event:", entry)
@@ -58,15 +65,20 @@ for entry in xrange(*event_range):
 	bytes = ch.GetEntry(entry)
 	if bytes < 1:
 		break
+	ev = ch.Event
 
-	ev = ch.Event 
-
-	proc.set_id(ev.RunId,0,ev.EventId)
-
+	#proc.set_id(ev.RunId,0,ev.EventId)
 	# set event pointers
 	for pid in supera_procs:
+		print("got here6")
+		print(pid, type(pid))
 		module = proc.process_ptr(pid)
-		module.SetEvent(ev)
+		print("got here7")
+		print("got here7")
+		print("got here7")
+		print("got here7")
+		module.SetEvent(ev)  # write this into pybind
+		print("got here8")
 
 	proc.process_entry()
 proc.finalize()
