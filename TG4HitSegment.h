@@ -11,7 +11,6 @@
 #define larcv larcv3
 #endif
 
-namespace EDepSim {class PersistencyManager;}
 class TG4HitSegment;
 
 /// A container for the hit segment information.
@@ -30,7 +29,6 @@ typedef std::map<std::string,TG4HitSegmentContainer> TG4HitSegmentDetectors;
 /// secondary energy depends on the configuration of the simulation, but
 /// generally, it refers to the amount of energy going into scintillation.
 class TG4HitSegment {
-     friend class EDepSim::PersistencyManager;
 public:
      typedef std::vector<int> Contributors;
      

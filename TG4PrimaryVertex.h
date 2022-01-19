@@ -13,13 +13,11 @@
 class TG4PrimaryVertex;
 class TG4PrimaryParticle;
 
-namespace EDepSim {class PersistencyManager;}
 typedef std::vector<TG4PrimaryVertex> TG4PrimaryVertexContainer;
 
 /// A class to save a G4 primary vertex into a rooooooooooot output file without linking
 /// to geant.
 class TG4PrimaryVertex {
-    friend class EDepSim::PersistencyManager;
 public:
     typedef std::vector<TG4PrimaryParticle> PrimaryParticles;
 
@@ -117,7 +115,6 @@ private:
 /// A class to save a G4 primary particle into a rooooooooooot output file without
 /// linking to geant.
 class TG4PrimaryParticle {
-    friend class EDepSim::PersistencyManager;
 public:
     TG4PrimaryParticle(void)
         : TrackId(-1), PDGCode(0), Momentum(0,0,0,0) {}

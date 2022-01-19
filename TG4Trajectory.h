@@ -10,7 +10,7 @@
 #define larcv larcv3
 #endif
 
-namespace EDepSim {class PersistencyManager;}
+
 class TG4Trajectory;
 class TG4TrajectoryPoint;
 
@@ -26,7 +26,6 @@ typedef std::vector<TG4Trajectory> TG4TrajectoryContainer;
 /// this particle, the initial momentum of the particle, and the path followed
 /// by the particle in the detector.  
 class TG4Trajectory {
-    friend class EDepSim::PersistencyManager;
 public:
     typedef std::vector<TG4TrajectoryPoint> TrajectoryPoints;
      
@@ -93,7 +92,6 @@ private:
 /// good record of the energy deposition.  Use the TG4HitSegment objects for a
 /// record of the energy deposition.
 class TG4TrajectoryPoint  {
-    friend class EDepSim::PersistencyManager;
 public:
     TG4TrajectoryPoint()
         : Position(0,0,0,0), Momentum(0,0,0,0),

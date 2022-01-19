@@ -1,0 +1,8 @@
+////////////////////////////////////////////////////////////
+//
+#include "TG4Event.h"
+
+ClassImp(TG4Event)
+
+TG4Event::~TG4Event() {}
+
