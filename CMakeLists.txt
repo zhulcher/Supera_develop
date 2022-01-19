@@ -5,8 +5,7 @@ set(name Supera)
 file(GLOB SOURCES *.cxx)
 file(GLOB HEADERS *.h)
 
-find_package(EDepSim) #short term fix
-target_link_libraries(Supera PUBLIC EDepSim::edepsim_io) #short term fix
+
 
 
 
@@ -17,6 +16,9 @@ target_link_libraries(Supera PUBLIC EDepSim::edepsim_io) #short term fix
 
 # Add a shared library
 add_library(${name} OBJECT ${SOURCES})
+
+find_package(EDepSim) #short term fix
+target_link_libraries(Supera PUBLIC EDepSim::edepsim_io) #short term fix
 
 #include("${ROOT_USE_FILE}")
 
