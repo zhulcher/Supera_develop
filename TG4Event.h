@@ -5,6 +5,7 @@
 #include "TG4Trajectory.h"
 #include "TG4HitSegment.h"
 
+class TG4Event;
 class TG4Event {
 public:
     TG4Event(void) {}
