@@ -6,7 +6,7 @@
 
 EST3D *get_tensor_pointer(larcv::IOManager &mgr, std::string str1, std::string str2) { return (EST3D *)(mgr.get_data(str1, str2)); }
 ECV3D *get_cluster_pointer(larcv::IOManager &mgr, std::string str1, std::string str2) { return (ECV3D *)(mgr.get_data(str1, str2)); }
-EPs *get_particle_pointer(larcv::IOManager &mgr, std::string str1, std::string str2) { return (EP *)(mgr.get_data(str1, _output_label)); }
+EPs *get_particle_pointer(larcv::IOManager &mgr, std::string str1, std::string str2) { return (EP *)(mgr.get_data(str1, str2)); }
 void newmeta_clus(ECV3D *event_clus, IM themeta) { *event_clus->meta(themeta); }
 void newmeta_tens(EST3D *event_tens, IM themeta) { *event_tens->meta(themeta); }
 
@@ -48,7 +48,7 @@ double meta_vox_dim(IM themeta, int dim)
 #elif __has_include("larcv3/core/dataformat/Particle.h")
 EST3Ds get_tensor_pointer(larcv3::IOManager &mgr, std::string str1, std::string str2) { return std::dynamic_pointer_cast<EST3D>(mgr.get_data(str1, str2)); }
 ECV3Ds get_cluster_pointer(larcv3::IOManager &mgr, std::string str1, std::string str2) { return std::dynamic_pointer_cast<ECV3D>(mgr.get_data(str1, str2)); }
-EPs get_particle_pointer(larcv3::IOManager &mgr, std::string str1, std::string str2) { return std::dynamic_pointer_cast<EventParticle>(mgr.get_data(str1, str2)); }
+EPs get_particle_pointer(larcv3::IOManager &mgr, std::string str1, std::string str2) { return std::dynamic_pointer_cast<EP>(mgr.get_data(str1, str2)); }
 void newmeta_clus(ECV3Ds event_clus, IM themeta)
 {
     for (size_t i = 0; i < event_clus->size(); i++)
