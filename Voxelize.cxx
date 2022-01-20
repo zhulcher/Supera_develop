@@ -5,6 +5,7 @@
 #include "SuperaG4HitSegment.h"
 //#include "geometry.h"
 #include "raybox.h"
+#include "larcv_interface.h"
 
 namespace larcv
 {
