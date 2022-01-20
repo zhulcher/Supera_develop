@@ -18,7 +18,7 @@
 #include <vector>
 #include <algorithm>
 
-#include "/app/EDepSim/TG4Trajectory.h"
+#include "TG4Trajectory.h"
 
 #ifdef __has_include
 #if __has_include("larcv3/core/dataformat/Particle.h")

@@ -11,7 +11,7 @@
 
 #include <vector>
 //#include "TG4HitSegment.h"
-#include "/app/EDepSim/TG4Event.h"
+#include "TG4Event.h"
 #include "geometry.h"
 
 
