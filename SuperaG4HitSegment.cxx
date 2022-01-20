@@ -179,10 +179,10 @@ namespace larcv {
     res.pdg_code(traj.GetPDGCode());
     auto const& mom = traj.GetInitialMomentum();
     res.momentum(mom.Px(),mom.Py(),mom.Pz());
-    larcv::SLorentzvector start = traj.Points.front().GetPosition();
+    TLorentzvector start = traj.Points.front().GetPosition();
     start.SetVect(start.Vect() * 0.1); // convert to cm
     res.position(start.X(), start.Y(), start.Z(), start.T());
-    larcv::SLorentzvector end = traj.Points.back().GetPosition();
+    TLorentzvector end = traj.Points.back().GetPosition();
     end.SetVect(end.Vect() * 0.1); // convert to cm
     res.end_position(end.X(), end.Y(), end.Z(), end.T());
 
@@ -204,8 +204,8 @@ namespace larcv {
     LARCV_DEBUG() << "   Trajectory steps:" << std::endl;
     for (std::size_t idx = 1; idx < traj.Points.size(); idx ++)
     {
-      larcv::SLorentzvector trajP1 = traj.Points[idx - 1].GetPosition();
-      larcv::SLorentzvector trajP2 = traj.Points[idx].GetPosition();
+      TLorentzvector trajP1 = traj.Points[idx - 1].GetPosition();
+      TLorentzvector trajP2 = traj.Points[idx].GetPosition();
       trajP1.SetVect(trajP1.Vect() * 0.1);  // convert units to cm
       trajP2.SetVect(trajP2.Vect() * 0.1);  // convert units to cm
 
@@ -226,8 +226,8 @@ namespace larcv {
       // and the loop will be cut off at the right place anyway.
       for (std::size_t idx = (step > 0) ? step : (traj.Points.size()-1 + step); idx < traj.Points.size(); idx += step)
       {
-        larcv::SLorentzvector trajP1 = traj.Points[idx - step].GetPosition();
-        larcv::SLorentzvector trajP2 = traj.Points[idx].GetPosition();
+        TLorentzvector trajP1 = traj.Points[idx - step].GetPosition();
+        TLorentzvector trajP2 = traj.Points[idx].GetPosition();
         trajP1.SetVect(trajP1.Vect() * 0.1);  // convert units to cm
         trajP2.SetVect(trajP2.Vect() * 0.1);  // convert units to cm
 
