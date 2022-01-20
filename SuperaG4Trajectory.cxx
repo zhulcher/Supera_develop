@@ -30,12 +30,7 @@ namespace larcv {
 
     auto evt = this->GetEvent();
     auto ev_cluster3d = get_cluster_pointer(mgr, "cluster3d", _cluster3d_producer);
-
-    #if __has_include("larcv3/core/dataformat/Particle.h")
-    auto ev_particles = std::dynamic_pointer_cast<EventParticle>(mgr.get_data("particle", _particle_producer));
-    #elif __has_include("larcv/core/DataFormat/Particle.h")
-    auto ev_particles = (EventParticle*)(mgr.get_data("particle",_particle_producer));
-    #endif
+    auto ev_particles = get_particle_pointer(mgr, "particle", _particle_producer)
 
     std::vector<larcv::Particle> part_v;
     part_v.reserve(evt->Trajectories.size());
@@ -115,9 +110,7 @@ namespace larcv {
   }
 
 
-  larcv::VoxelSet SuperaG4Trajectory::MakeVoxelSet(const ::TG4Trajectory& trj, 
-    const IM& meta,
-    larcv::Particle& part)
+  larcv::VoxelSet SuperaG4Trajectory::MakeVoxelSet(const ::TG4Trajectory& trj, const IM& meta, larcv::Particle& part)
   {
     larcv::VoxelSet vs;
     double mass2 = trj.GetInitialMomentum().Mag2();
@@ -125,11 +118,7 @@ namespace larcv {
     double dist_travel = 0.;
     double energy_deposit = 0.;
 
-    #if __has_include("larcv3/core/dataformat/Particle.h")
-        double smallest_side = std::min(meta.voxel_dimensions(0),std::min(meta.voxel_dimensions(1),meta.voxel_dimensions(2)));
-        #elif __has_include("larcv/core/DataFormat/Particle.h")
-        double smallest_side = std::min(meta.size_voxel_x(),std::min(meta.size_voxel_y(),meta.size_voxel_z()));
-        #endif
+    double smallest_side = std::min(meta_vox_dim(meta, 0), std::min(meta_vox_dim(meta, 1), meta_vox_dim(meta, 2)));
     bool first_step_set = false;
     LARCV_INFO() << "Tracking: PDG " << trj.GetPDGCode() << " E = " << trj.GetInitialMomentum().E() << " MeV" << std::endl;
     larcv::AABBox<double> box(meta);
@@ -198,26 +187,19 @@ namespace larcv {
         if(vox_id==larcv::kINVALID_VOXELID) break;
         std::vector<long unsigned int> vect2 = meta.coordinates(vox_id);
         nx=vect2[0];ny=vect2[1];nz=vect2[2];
-        box.bounds[0].x = meta.min(0) + nx * meta.voxel_dimensions(0);
-        box.bounds[0].y = meta.min(1) + ny * meta.voxel_dimensions(1);
-        box.bounds[0].z = meta.min(2) + nz * meta.voxel_dimensions(2);
-        box.bounds[1].x = box.bounds[0].x + meta.voxel_dimensions(0);
-        box.bounds[1].y = box.bounds[0].y + meta.voxel_dimensions(1);
-        box.bounds[1].z = box.bounds[0].z + meta.voxel_dimensions(2);
         #elif __has_include("larcv/core/DataFormat/Particle.h")
         auto vox_id = meta.id((double)(pt.x), (double)(pt.y), (double)(pt.z));
         if(vox_id==larcv::kINVALID_VOXELID) break;
         meta.id_to_xyz_index(vox_id, nx, ny, nz);
-        box.bounds[0].x = meta.min_x() + nx * meta.size_voxel_x();
-        box.bounds[0].y = meta.min_y() + ny * meta.size_voxel_y();
-        box.bounds[0].z = meta.min_z() + nz * meta.size_voxel_z();
-        box.bounds[1].x = box.bounds[0].x + meta.size_voxel_x();
-        box.bounds[1].y = box.bounds[0].y + meta.size_voxel_y();
-        box.bounds[1].z = box.bounds[0].z + meta.size_voxel_z();
         #endif
+        box.bounds[0].x = meta_min(meta, 0) + nx * meta_vox_dim(meta, 0);
+        box.bounds[0].y = meta_min(meta, 1) + ny * meta_vox_dim(meta, 1);
+        box.bounds[0].z = meta_min(meta, 2) + nz * meta_vox_dim(meta, 2);
+        box.bounds[1].x = box.bounds[0].x + meta_vox_dim(meta, 0);
+        box.bounds[1].y = box.bounds[0].y + meta_vox_dim(meta, 1);
+        box.bounds[1].z = box.bounds[0].z + meta_vox_dim(meta, 2);
 
-        
-        LARCV_DEBUG() << "    Inspecting a voxel id " << vox_id << " ... " << box.bounds[0] << " => " << box.bounds[1] << std::endl;
+                LARCV_DEBUG() << "    Inspecting a voxel id " << vox_id << " ... " << box.bounds[0] << " => " << box.bounds[1] << std::endl;
         auto cross = box.intersect(ray,t0,t1);
 
         // no crossing

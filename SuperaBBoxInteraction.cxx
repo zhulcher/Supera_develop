@@ -144,7 +144,7 @@ namespace larcv
     meta.set_dimension(0, _xlen, xnum, min_pt.x);
     meta.set_dimension(1, _ylen, ynum, min_pt.y);
     meta.set_dimension(2, _zlen, znum, min_pt.z);
-    #endif
+#endif
     LARCV_INFO() << "3D Meta:" << meta.dump() << std::endl;
 
     // Create Cluster3D

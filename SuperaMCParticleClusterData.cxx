@@ -2,14 +2,6 @@
 
 #include <numeric>
 
-#ifdef __has_include
-#if __has_include("larcv/core/DataFormat/Particle.h")
-#include "larcv/core/Base/larcv_logger.h"
-#elif __has_include("larcv3/core/dataformat/Particle.h")
-#include "larcv3/core/base/larcv_logger.h"
-#define larcv larcv3
-#endif
-#endif
 
 namespace supera
 {

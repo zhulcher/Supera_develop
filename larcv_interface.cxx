@@ -45,6 +45,13 @@ double meta_vox_dim(IM themeta, int dim)
     if (dim == 1) return themeta.size_voxel_y();
     if (dim == 2) return themeta.size_voxel_z();
 }
+
+double meta_pos(IM themeta, VoxelID_t myid, int dim)
+{
+    if (dim == 0) return themeta.pos_x(myid);
+    if (dim == 1) return themeta.pos_y(myid);
+    if (dim == 2) return themeta.pos_z(myid);
+};
 #elif __has_include("larcv3/core/dataformat/Particle.h")
 EST3Ds get_tensor_pointer(larcv3::IOManager &mgr, std::string str1, std::string str2) { return std::dynamic_pointer_cast<EST3D>(mgr.get_data(str1, str2)); }
 ECV3Ds get_cluster_pointer(larcv3::IOManager &mgr, std::string str1, std::string str2) { return std::dynamic_pointer_cast<ECV3D>(mgr.get_data(str1, str2)); }
@@ -117,6 +124,7 @@ void emplace_tens(EST3Ds event_tens, larcv3::VoxelSet myvs, IM themeta)
 
 double meta_min(IM themeta,int dim) {return themeta.min(dim);}
 double meta_vox_dim(IM themeta, int dim) { return themeta.voxel_dimensions(dim); }
+double meta_pos(IM themeta, VoxelID_t myid, int dim) {return meta.position(myid).at(dim);}
 #endif
 
 #endif

@@ -47,12 +47,7 @@ namespace larcv {
     SuperaBase::process(mgr);
 
     auto evt = this->GetEvent();
-
-    #if __has_include("larcv3/core/dataformat/Particle.h")
-    auto ev_particles = std::dynamic_pointer_cast<EventParticle>(mgr.get_data("particle", _particle_producer));
-    #elif __has_include("larcv/core/DataFormat/Particle.h")
-    auto ev_particles = (EventParticle*)(mgr.get_data("particle",_particle_producer));
-    #endif
+    auto ev_particles = get_particle_pointer(mgr, "particle", _particle_producer)
     auto ev_hittensor = get_tensor_pointer(mgr, "sparse3d", _sparsetensor3d_producer);
 
     auto meta = getmeta_tensor_2(ev_hittensor);

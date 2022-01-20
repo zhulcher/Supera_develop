@@ -28,11 +28,7 @@ namespace larcv
     const double epsilon = 1.e-3;
     double dist_travel = 0.;
     double energy_deposit = 0.;
-    #if __has_include("larcv3/core/dataformat/Particle.h")
-        double smallest_side = std::min(meta.voxel_dimensions(0),std::min(meta.voxel_dimensions(1),meta.voxel_dimensions(2)));
-        #elif __has_include("larcv/core/DataFormat/Particle.h")
-        double smallest_side = std::min(meta.size_voxel_x(),std::min(meta.size_voxel_y(),meta.size_voxel_z()));
-        #endif
+    double smallest_side = std::min(meta_vox_dim(meta,0), std::min(meta_vox_dim(meta,1), meta_vox_dim(meta,2)));
     LARCV_SDEBUG() <<"World: " << box.bounds[0] << " => " << box.bounds[1] << std::endl;
 
     Vec3d start = hitSegment.GetStart().Vect();
