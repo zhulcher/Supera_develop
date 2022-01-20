@@ -21,6 +21,8 @@ void newmeta_tens(EST3D *event_tens, IM themeta) ;
 //void newmeta_tens_nostar(*EST3D *event_tens, IM themeta) { *event_tens->meta(themeta); }
 IM getmeta_cluster(ECV3D event_clus) ;
 IM getmeta_cluster_2(ECV3D *event_clus) ;
+IM getmeta_tensor(EST3D event_tens);
+IM getmeta_tensor_2(EST3D *event_tens);
 void myresize(ECV3D *event_clus, const size_t mynum) ;
 //void id_to_xyz_index(larcv::Voxel3DMeta themeta,size_t ix, size_t iy, size_t iz,)
 #elif __has_include("larcv3/core/dataformat/Particle.h")
@@ -58,6 +60,8 @@ void newmeta_tens(EST3Ds event_tens, IM themeta);
 //}
 IM getmeta_cluster(ECV3D event_clus) ;
 IM getmeta_cluster_2(ECV3Ds event_clus);
+IM getmeta_tensor(EST3D event_tens);
+IM getmeta_tensor_2(EST3Ds event_tens);
 void myresize(ECV3Ds event_clus, const size_t mynum) ;
 
 #endif
@@ -65,7 +69,6 @@ void myresize(ECV3Ds event_clus, const size_t mynum) ;
 void emplace_writeable_voxel(ECV3Ds event_clus, int outindex, larcv::VoxelSet myvs);
 void set_writeable_voxel(ECV3Ds event_clus, int index, larcv::VoxelSet myvs);
 void emplace_tens(EST3Ds event_tens, larcv::VoxelSet myvs, IM themeta);
-IM getmeta_tensor_2(EST3Ds event_tens);
 double meta_min(IM themeta, int dim);
 double meta_vox_dim(IM themeta, int dim);
 

@@ -12,6 +12,8 @@ void newmeta_tens(EST3D *event_tens, IM themeta) { *event_tens->meta(themeta); }
 
 IM getmeta_cluster(ECV3D event_clus) { return event_clus.meta(); }
 IM getmeta_cluster_2(ECV3D *event_clus) { return event_clus->meta(); }
+IM getmeta_tensor(EST3D event_tens) { return event_tens.meta(); }
+IM getmeta_tensor_2(EST3Ds event_tens) { return event_tens->meta(); }
 void myresize(ECV3D *event_clus, const size_t mynum) { event_clus->resize(mynum); }
 void emplace_writeable_voxel(ECV3Ds event_clus, int outindex, larcv::VoxelSet myvs)
 {
@@ -29,7 +31,7 @@ void emplace_tens(EST3Ds event_tens, larcv::VoxelSet myvs, larcv::Voxel3DMeta th
 {
     event_tens->emplace(std::move(myvs), themeta);
 }
-IM getmeta_tensor_2(EST3Ds event_tens) { return event_tens.meta(); }
+
 
 double meta_min(IM themeta,int dim) 
 {
@@ -76,6 +78,9 @@ void newmeta_tens(EST3Ds event_tens, IM themeta)
 //     }
 // }
 IM getmeta_cluster(ECV3D event_clus) { return event_clus.sparse_cluster(0).meta(); }
+IM getmeta_cluster_2(ECV3Ds event_clus) { return event_clus->sparse_cluster(0)->meta(); }
+IM getmeta_tensor(EST3D event_tens) { return event_tens.sparse_tensor(0).meta(); }
+IM getmeta_tensor_2(EST3Ds event_tens) { return event_tens->sparse_tensor(0)->meta(); }
 void myresize(ECV3Ds event_clus, const size_t mynum)
 {
     for (size_t i = 0; i < event_clus->size(); i++)
@@ -108,8 +113,7 @@ void emplace_tens(EST3Ds event_tens, larcv3::VoxelSet myvs, IM themeta)
         event_tens->at(i).emplace(std::move(myvs), themeta);
     }
 }
-IM getmeta_cluster_2(ECV3Ds event_clus) { return event_clus->sparse_cluster(0).meta(); }
-IM getmeta_tensor_2(EST3Ds event_tens) { return event_tens->sparse_tensor(0).meta(); }
+
 
 double meta_min(IM themeta,int dim) {return themeta.min(dim);}
 double meta_vox_dim(IM themeta, int dim) { return themeta.voxel_dimensions(dim); }

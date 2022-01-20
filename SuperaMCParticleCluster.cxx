@@ -168,7 +168,7 @@ namespace larcv
     }
     else if(!_ref_meta3d_tensor3d.empty()) {
       auto const &ev_tensor3d = mgr.get_data<EST3D>(_ref_meta3d_tensor3d);
-      meta3d = getmeta_tensor_2(ev_tensor3d);
+      meta3d = getmeta_tensor(ev_tensor3d);
     }
 
     
