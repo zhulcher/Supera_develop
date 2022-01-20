@@ -168,12 +168,7 @@ namespace larcv
     }
     else if(!_ref_meta3d_tensor3d.empty()) {
       auto const &ev_tensor3d = mgr.get_data<EST3D>(_ref_meta3d_tensor3d);
-
-    #if __has_include("larcv/core/DataFormat/Particle.h")
-      meta3d = ev_tensor3d.meta();
-    #elif __has_include("larcv3/core/dataformat/Particle.h")
-      meta3d = ev_tensor3d.sparse_tensor(0).meta();
-    #endif
+      meta3d = getmeta_tensor_2(ev_tensor3d)
     }
 
     
@@ -181,11 +176,7 @@ namespace larcv
     // Build MCParticle List.
     // Note that we made Particles in SuperaG4HitSegment.  We'll use those here.
     TG4Event const *ev = GetEvent();
-    #if __has_include("larcv3/core/dataformat/Particle.h")
-    const auto ev_particles = std::dynamic_pointer_cast<EventParticle>(mgr.get_data("particle", _input_particle_label));
-    #elif __has_include("larcv/core/DataFormat/Particle.h")
-    const auto ev_particles = dynamic_cast<EventParticle *>(mgr.get_data("particle", _input_particle_label));
-    #endif
+    const auto ev_particles = get_particle_pointer(mgr,"particle", _input_particle_label);
     
     const std::vector<larcv::Particle> & particles = ev_particles->as_vector();
     LARCV_DEBUG() << "Loading event run/event = " << ev->RunId << "/" << ev->EventId << std::endl;
@@ -450,14 +441,9 @@ namespace larcv
     event_segment->emplace(std::move(semantic_vs), meta3d);
     event_cindex->emplace(std::move(cid_vs), meta3d);
 #endif
- 
 
+    auto event_mcp = get_particle_pointer(mgr, "particle", _output_label);
     // Store output
-    #if __has_include("larcv3/core/dataformat/Particle.h")
-    auto event_mcp = std::dynamic_pointer_cast<EventParticle>(mgr.get_data("particle", _output_label));
-    #elif __has_include("larcv/core/DataFormat/Particle.h")
-    auto event_mcp = (EventParticle *) (mgr.get_data("particle", _output_label));
-    #endif
     event_mcp->emplace(std::move(part_v));
 
     return true;
