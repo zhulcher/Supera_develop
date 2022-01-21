@@ -569,15 +569,10 @@ namespace larcv
                         << std::endl;
 
           supera::EDep pt;
-          #if __has_include("larcv/core/DataFormat/Particle.h")
-          pt.x = meta.pos_x(vox.id());
-          pt.y = meta.pos_y(vox.id());
-          pt.z = meta.pos_z(vox.id());
-          #elif __has_include("larcv3/core/dataformat/Particle.h")
-          pt.x = meta.position(vox.id()).at(0);
-          pt.y = meta.position(vox.id()).at(1);
-          pt.z = meta.position(vox.id()).at(2);
-          #endif
+          
+          pt.x = meta_pos(meta,vox.id(),0);
+          pt.y = meta_pos(meta,vox.id(),1);
+          pt.z = meta_pos(meta,vox.id(),2);
           
           pt.t = t;
           pt.e = vox.value();

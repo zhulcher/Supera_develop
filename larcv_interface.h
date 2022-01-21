@@ -1,5 +1,8 @@
 #ifndef LARCV_INTERFACE_H
 #define LARCV_INTERFACE_H
+
+#include "BBox.h"
+
 #if __has_include("larcv/core/DataFormat/Particle.h")
 #include "larcv/core/DataFormat/EventParticle.h"
 #include "larcv/core/DataFormat/EventVoxel3D.h"
