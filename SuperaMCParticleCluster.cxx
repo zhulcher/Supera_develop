@@ -1164,7 +1164,7 @@ namespace larcv
         auto const newvtx=vtx;
 #elif __has_include("larcv3/core/dataformat/Particle.h")
         auto const newpt=supera::Point3D(pt.at(0), pt.at(1), pt.at(2));
-        auto const newvtx=supera::Point3D(vtx.x[0], vtx.y[0], vtx.z[0]);
+        auto const newvtx=supera::Point3D(vtx.x[0], vtx.x[1], vtx.x[2]);
 #endif
         double dist = newpt.squared_distance(vtx);
         //double dist = pow(pt.at(0)-vtx.x[0],2)+pow(pt.at(1)-vtx.x[1],2)+pow(pt.at(2)-vtx.x[2],2);

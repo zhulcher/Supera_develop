@@ -14,11 +14,13 @@
 #include "larcv/core/Base/LArCVTypes.h"
 #include "larcv/core/DataFormat/Particle.h"
 #include "larcv/core/DataFormat/Voxel.h"
+#include "larcv/core/Base/larcv_logger.h"
 #elif __has_include("larcv3/core/dataformat/Particle.h")
 #include "larcv3/core/base/LArCVTypes.h"
 #include "larcv3/core/dataformat/Particle.h"
 #include "larcv3/core/dataformat/Voxel.h"
 #include "larcv3/core/dataformat/DataFormatTypes.h"
+#include "larcv3/core/base/larcv_logger.h"
 #define larcv larcv3
 #endif
 #endif
