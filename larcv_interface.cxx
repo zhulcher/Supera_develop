@@ -52,11 +52,11 @@ double meta_pos(IM themeta, unsigned long long myid, int dim)
     if (dim == 1) return themeta.pos_y(myid);
     if (dim == 2) return themeta.pos_z(myid);
 }
-void id_to_xyz_id(IM themeta,larcv::VoxelID_t id, size_t &x, size_t &y, size_t &z) const
+void id_to_xyz_id(IM themeta,larcv::VoxelID_t id, size_t &x, size_t &y, size_t &z)
 {
     themeta.id_to_xyz_index( id, x, y, z)
 }
-void pos_to_xyz_id(IM themeta,double posx, double posy, double posz, size_t& x, size_t& y, size_t& z) const
+void pos_to_xyz_id(IM themeta,double posx, double posy, double posz, size_t& x, size_t& y, size_t& z)
 {
     auto vox_id = themeta.id(posx, posy, posy);
         if(vox_id==larcv::kINVALID_VOXELID) break;
@@ -135,12 +135,12 @@ void emplace_tens(EST3Ds event_tens, larcv3::VoxelSet myvs, IM themeta)
 double meta_min(IM themeta,int dim) {return themeta.min(dim);}
 double meta_vox_dim(IM themeta, int dim) { return themeta.voxel_dimensions(dim); }
 double meta_pos(IM themeta, unsigned long long myid, int dim) { return themeta.position(myid).at(dim); }
-void id_to_xyz_id(IM themeta, larcv::VoxelID_t id, size_t &x, size_t &y, size_t &z) const
+void id_to_xyz_id(IM themeta, larcv::VoxelID_t id, size_t &x, size_t &y, size_t &z)
 {
     std::vector<long unsigned int> vect = themeta.coordinates(id);
       x=vect[0];y=vect[1];z=vect[2];
 }
-void pos_to_xyz_id(IM themeta,double posx, double posy, double posz, size_t& x, size_t& y, size_t& z) const
+void pos_to_xyz_id(IM themeta,double posx, double posy, double posz, size_t& x, size_t& y, size_t& z)
 {
     std::vector<double> vect{ posx, posy, posz};
     auto vox_id = meta.position_to_index(vect);
