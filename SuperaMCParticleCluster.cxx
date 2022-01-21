@@ -1166,7 +1166,7 @@ namespace larcv
         auto const newpt=supera::Point3D(pt.at(0), pt.at(1), pt.at(2));
         auto const newvtx=supera::Point3D(vtx.x[0], vtx.x[1], vtx.x[2]);
 #endif
-        double dist = newpt.squared_distance(vtx);
+        double dist = newpt.squared_distance(newvtx);
         //double dist = pow(pt.at(0)-vtx.x[0],2)+pow(pt.at(1)-vtx.x[1],2)+pow(pt.at(2)-vtx.x[2],2);
         if (dist > min_dist) continue;
         min_dist = dist;
