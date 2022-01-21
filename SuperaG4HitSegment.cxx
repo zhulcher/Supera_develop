@@ -47,7 +47,7 @@ namespace larcv {
     SuperaBase::process(mgr);
 
     auto evt = this->GetEvent();
-    auto ev_particles = get_particle_pointer(mgr, "particle", _particle_producer)
+    auto ev_particles = get_particle_pointer(mgr, "particle", _particle_producer);
     auto ev_hittensor = get_tensor_pointer(mgr, "sparse3d", _sparsetensor3d_producer);
 
     auto meta = getmeta_tensor_2(ev_hittensor);
