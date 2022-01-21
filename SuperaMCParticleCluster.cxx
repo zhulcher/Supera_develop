@@ -1707,11 +1707,11 @@ namespace larcv
 
     for (auto const &vox1 : vs1.as_vector())
     {
-      id_to_xyz_id(meta, vox1.id(),  ix1,  iy1, iz1)
+      id_to_xyz_id(meta, vox1.id(),  ix1,  iy1, iz1);
       
       for (auto const &vox2 : vs2.as_vector())
       {
-        id_to_xyz_id(meta, vox2.id(),  ix2,  iy2, iz2)
+        id_to_xyz_id(meta, vox2.id(),  ix2,  iy2, iz2);
 
         if (ix1 > ix2) diffx = ix1 - ix2; else diffx = ix2 - ix1;
         if (iy1 > iy2) diffy = iy1 - iy2; else diffy = iy2 - iy1;
