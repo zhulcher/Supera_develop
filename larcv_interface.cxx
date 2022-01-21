@@ -124,7 +124,7 @@ void emplace_tens(EST3Ds event_tens, larcv3::VoxelSet myvs, IM themeta)
 
 double meta_min(IM themeta,int dim) {return themeta.min(dim);}
 double meta_vox_dim(IM themeta, int dim) { return themeta.voxel_dimensions(dim); }
-double meta_pos(IM themeta, unsigned long long myid, int dim) { return meta.position(myid).at(dim); }
+double meta_pos(IM themeta, unsigned long long myid, int dim) { return themeta.position(myid).at(dim); }
 #endif
 
 #endif
