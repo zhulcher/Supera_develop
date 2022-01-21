@@ -56,11 +56,11 @@ void id_to_xyz_id(IM themeta,larcv::VoxelID_t id, size_t &x, size_t &y, size_t &
 {
     themeta.id_to_xyz_index( id, x, y, z)
 }
-void pos_to_xyz_id(IM themeta,double posx, double posy, double posz, size_t& x, size_t& y, size_t& z)
+void pos_to_xyz_id(IM themeta,double posx, double posy, double posz, size_t& x, size_t& y, size_t& z,larcv::VoxelID_t &vox_id)
 {
-    auto vox_id = themeta.id(posx, posy, posy);
-        if(vox_id==larcv::kINVALID_VOXELID) break;
-        themeta.id_to_xyz_index(vox_id, x, y, z);
+    vox_id = themeta.id(posx, posy, posy);
+    if(vox_id==larcv::kINVALID_VOXELID) break;
+    themeta.id_to_xyz_index(vox_id, x, y, z);
 }
 #elif __has_include("larcv3/core/dataformat/Particle.h")
 EST3Ds get_tensor_pointer(larcv3::IOManager &mgr, std::string str1, std::string str2) { return std::dynamic_pointer_cast<EST3D>(mgr.get_data(str1, str2)); }
@@ -140,10 +140,10 @@ void id_to_xyz_id(IM themeta, larcv::VoxelID_t id, size_t &x, size_t &y, size_t 
     std::vector<long unsigned int> vect = themeta.coordinates(id);
       x=vect[0];y=vect[1];z=vect[2];
 }
-void pos_to_xyz_id(IM themeta,double posx, double posy, double posz, size_t& x, size_t& y, size_t& z)
+void pos_to_xyz_id(IM themeta, double posx, double posy, double posz, size_t &x, size_t &y, size_t &z, larcv::VoxelID_t &vox_id)
 {
     std::vector<double> vect{ posx, posy, posz};
-    auto vox_id = meta.position_to_index(vect);
+    vox_id = meta.position_to_index(vect);
     std::vector<long unsigned int> vect2 = meta.coordinates(vox_id);
     if(vect2[0]==larcv::kINVALID_INDEX) break;
     if(vect2[1]==larcv::kINVALID_INDEX) break;

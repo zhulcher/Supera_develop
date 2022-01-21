@@ -76,6 +76,6 @@ void emplace_tens(EST3Ds event_tens, larcv::VoxelSet myvs, IM themeta);
 double meta_min(IM themeta, int dim);
 double meta_vox_dim(IM themeta, int dim);
 void id_to_xyz_id(larcv::VoxelID_t id, size_t& x, size_t& y, size_t& z);
-void pos_to_xyz_id(IM themeta,double posx, double posy, double posz, size_t &x, size_t &y, size_t &z);
+void pos_to_xyz_id(IM themeta, double posx, double posy, double posz, size_t &x, size_t &y, size_t &z, larcv::VoxelID_t &vox_id);
 
 #endif
