@@ -30,7 +30,7 @@ namespace larcv {
 
     auto evt = this->GetEvent();
     auto ev_cluster3d = get_cluster_pointer(mgr, "cluster3d", _cluster3d_producer);
-    auto ev_particles = get_particle_pointer(mgr, "particle", _particle_producer)
+    auto ev_particles = get_particle_pointer(mgr, "particle", _particle_producer);
 
     std::vector<larcv::Particle> part_v;
     part_v.reserve(evt->Trajectories.size());
