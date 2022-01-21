@@ -61,7 +61,7 @@ int pos_to_xyz_id(IM themeta,double posx, double posy, double posz, size_t& x, s
     vox_id = themeta.id(posx, posy, posy);
     if(vox_id==larcv::kINVALID_VOXELID) return 1;
     themeta.id_to_xyz_index(vox_id, x, y, z);
-    return 0
+    return 0;
 }
 #elif __has_include("larcv3/core/dataformat/Particle.h")
 EST3Ds get_tensor_pointer(larcv3::IOManager &mgr, std::string str1, std::string str2) { return std::dynamic_pointer_cast<EST3D>(mgr.get_data(str1, str2)); }
@@ -150,7 +150,7 @@ int pos_to_xyz_id(IM themeta, double posx, double posy, double posz, size_t &x, 
     if(vect2[1]==larcv::kINVALID_INDEX) return 1;
     if(vect2[2]==larcv::kINVALID_INDEX) return 1;
     x=vect2[0];y=vect2[1];z=vect2[2];
-    return 0
+    return 0;
 }
 #endif
 
