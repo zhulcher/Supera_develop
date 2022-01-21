@@ -1161,9 +1161,11 @@ namespace larcv
         auto const pt = meta3d.position(vox.id());
         #if __has_include("larcv/core/DataFormat/Particle.h")
         auto const newpt=pt;
-        #elif __has_include("larcv3/core/dataformat/Particle.h")
+        auto const newvtx=vtx;
+#elif __has_include("larcv3/core/dataformat/Particle.h")
         auto const newpt=supera::Point3D(pt.at(0), pt.at(1), pt.at(2));
-        #endif
+        auto const newvtx=supera::Point3D(vtx.at(0), vtx.at(1), vtx.at(2));
+#endif
         double dist = newpt.squared_distance(vtx);
         //double dist = pow(pt.at(0)-vtx.x[0],2)+pow(pt.at(1)-vtx.x[1],2)+pow(pt.at(2)-vtx.x[2],2);
         if (dist > min_dist) continue;
