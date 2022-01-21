@@ -101,19 +101,8 @@ namespace larcv
       // define the inspection box
       Vec3d pt = pt0 + dir * (t1 + epsilon);
       LARCV_SDEBUG() << "    New point: " << pt << std::endl;
-      pos_to_xyz_id(meta,(double)(pt.x), (double)(pt.y), (double)(pt.z), nx, ny, nz)
-        #if __has_include("larcv3/core/dataformat/Particle.h")
-        std::vector<double> vect{ (double)(pt.x), (double)(pt.y), (double)(pt.z)};
-        auto vox_id = meta.position_to_index(vect);
-        if(vox_id==larcv::kINVALID_VOXELID) break;
-        std::vector<long unsigned int> vect2 = meta.coordinates(vox_id);
-        nx=vect2[0];ny=vect2[1];nz=vect2[2];
-        
-        #elif __has_include("larcv/core/DataFormat/Particle.h")
-        auto vox_id = meta.id((double)(pt.x), (double)(pt.y), (double)(pt.z));
-        if(vox_id==larcv::kINVALID_VOXELID) break;
-        meta.id_to_xyz_index(vox_id, nx, ny, nz);
-        #endif
+      pos_to_xyz_id(meta,(double)(pt.x), (double)(pt.y), (double)(pt.z), nx, ny, nz);
+
         box.bounds[0].x = meta_min(meta, 0) + nx * meta_vox_dim(meta, 0);
         box.bounds[0].y = meta_min(meta, 1) + ny * meta_vox_dim(meta, 1);
         box.bounds[0].z = meta_min(meta, 2) + nz * meta_vox_dim(meta, 2);

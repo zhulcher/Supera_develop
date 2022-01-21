@@ -181,8 +181,8 @@ namespace larcv {
         // define the inspection box
         Vec3d pt = pt0 + dir * (t1 + epsilon);
         LARCV_DEBUG() << "    New point: " << pt << std::endl;
-        
-        pos_to_xyz_id(meta,(double)(pt.x), (double)(pt.y), (double)(pt.z), nx, ny, nz)
+
+        pos_to_xyz_id(meta,(double)(pt.x), (double)(pt.y), (double)(pt.z), nx, ny, nz);
 
         box.bounds[0].x = meta_min(meta, 0) + nx * meta_vox_dim(meta, 0);
         box.bounds[0].y = meta_min(meta, 1) + ny * meta_vox_dim(meta, 1);
