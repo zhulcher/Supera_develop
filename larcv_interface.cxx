@@ -51,7 +51,17 @@ double meta_pos(IM themeta, unsigned long long myid, int dim)
     if (dim == 0) return themeta.pos_x(myid);
     if (dim == 1) return themeta.pos_y(myid);
     if (dim == 2) return themeta.pos_z(myid);
-};
+}
+void id_to_xyz_id(IM themeta,VoxelID_t id, size_t &x, size_t &y, size_t &z) const
+{
+    themeta.id_to_xyz_index( id, x, y, z)
+}
+void pos_to_xyz_id(IM themeta,double posx, double posy, double posz, size_t &x, size_t &y, size_t &z) const
+{
+    auto vox_id = themeta.id(posx, posy, posy);
+        if(vox_id==larcv::kINVALID_VOXELID) break;
+        themeta.id_to_xyz_index(vox_id, x, y, z);
+}
 #elif __has_include("larcv3/core/dataformat/Particle.h")
 EST3Ds get_tensor_pointer(larcv3::IOManager &mgr, std::string str1, std::string str2) { return std::dynamic_pointer_cast<EST3D>(mgr.get_data(str1, str2)); }
 ECV3Ds get_cluster_pointer(larcv3::IOManager &mgr, std::string str1, std::string str2) { return std::dynamic_pointer_cast<ECV3D>(mgr.get_data(str1, str2)); }
@@ -125,6 +135,21 @@ void emplace_tens(EST3Ds event_tens, larcv3::VoxelSet myvs, IM themeta)
 double meta_min(IM themeta,int dim) {return themeta.min(dim);}
 double meta_vox_dim(IM themeta, int dim) { return themeta.voxel_dimensions(dim); }
 double meta_pos(IM themeta, unsigned long long myid, int dim) { return themeta.position(myid).at(dim); }
+void id_to_xyz_id(IM themeta, VoxelID_t id, size_t &x, size_t &y, size_t &z) const
+{
+    std::vector<long unsigned int> vect = themeta.coordinates(id);
+      x=vect[0];y=vect[1];z=vect[2];
+}
+void pos_to_xyz_id(IM themeta,double posx, double posy, double posz, size_t &x, size_t &y, size_t &z) const
+{
+    std::vector<double> vect{ posx, posy, posz};
+    auto vox_id = meta.position_to_index(vect);
+    std::vector<long unsigned int> vect2 = meta.coordinates(vox_id);
+    if(vect2[0]==larcv::kINVALID_INDEX) break;
+    if(vect2[1]==larcv::kINVALID_INDEX) break;
+    if(vect2[2]==larcv::kINVALID_INDEX) break;
+    x=vect2[0];y=vect2[1];z=vect2[2];
+}
 #endif
 
 #endif

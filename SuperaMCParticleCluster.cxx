@@ -1707,21 +1707,12 @@ namespace larcv
 
     for (auto const &vox1 : vs1.as_vector())
     {
-      #if __has_include("larcv3/core/dataformat/Particle.h")
-      std::vector<long unsigned int> vect3 = meta.coordinates(vox1.id());
-      ix1=vect3[0];iy1=vect3[1];iz1=vect3[2];
-      #elif __has_include("larcv/core/DataFormat/Particle.h")
-      meta.id_to_xyz_index(vox1.id(), ix1, iy1, iz1);
-      #endif
+      id_to_xyz_id(meta, vox1.id(),  ix1,  iy1, iz1)
       
       for (auto const &vox2 : vs2.as_vector())
       {
-        #if __has_include("larcv3/core/dataformat/Particle.h")
-        std::vector<long unsigned int> vect4 = meta.coordinates(vox2.id());
-        ix2=vect4[0];iy2=vect4[1];iz2=vect4[2];
-        #elif __has_include("larcv/core/DataFormat/Particle.h")
-        meta.id_to_xyz_index(vox2.id(), ix2, iy2, iz2);
-        #endif
+        id_to_xyz_id(meta, vox2.id(),  ix2,  iy2, iz2)
+
         if (ix1 > ix2) diffx = ix1 - ix2; else diffx = ix2 - ix1;
         if (iy1 > iy2) diffy = iy1 - iy2; else diffy = iy2 - iy1;
         if (iz1 > iz2) diffz = iz1 - iz2; else diffz = iz2 - iz1;

@@ -10,10 +10,6 @@
 #include "larcv_interface.h"
 #include "Voxelize.h"
 
-#if __has_include("larcv3/core/dataformat/Particle.h")
-#define larcv larcv3
-#endif
-
 namespace larcv {
 
   static SuperaG4HitSegmentProcessFactory __global_SuperaG4HitSegmentProcessFactory__;
