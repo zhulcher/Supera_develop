@@ -151,16 +151,16 @@ namespace larcv
     for (auto const &name : _cluster3d_labels)
     {
       auto &cluster3d = mgr.get_data<ECV3D>(name);
-      #if __has_include("larcv/core/DataFormat/Particle.h")
+      //#if __has_include("larcv/core/DataFormat/Particle.h")
       newmeta_clus(&cluster3d, meta);
-      #elif __has_include("larcv3/core/dataformat/Particle.h")
-      {
-        for (size_t i = 0; i < cluster3d.size(); i++)
-        {
-          cluster3d.at(i).meta(meta);
-        }
-      }
-      #endif
+      // #elif __has_include("larcv3/core/dataformat/Particle.h")
+      // {
+      //   for (size_t i = 0; i < cluster3d.size(); i++)
+      //   {
+      //     cluster3d.at(i).meta(meta);
+      //   }
+      // }
+      // #endif
       
     }
     // Create Tensor3D
