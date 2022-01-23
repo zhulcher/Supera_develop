@@ -1164,7 +1164,7 @@ namespace larcv
         //double dist = pow(pt.at(0)-vtx.x[0],2)+pow(pt.at(1)-vtx.x[1],2)+pow(pt.at(2)-vtx.x[2],2);
         if (dist > min_dist) continue;
         min_dist = dist;
-        min_pt = newpt;
+        min_pt = pt;
         
       }
       if (min_dist > (sqrt(3.) + 1.e-3)) grp.part.first_step(kINVALID_DOUBLE, kINVALID_DOUBLE, kINVALID_DOUBLE,kINVALID_DOUBLE);
