@@ -15,7 +15,7 @@ typedef larcv::EventParticle EP;
 typedef larcv::EventClusterVoxel3D *ECV3Ds;
 typedef larcv::EventSparseTensor3D *EST3Ds;
 typedef larcv::EventParticle *EPs;
-void newmeta_clus_nostar(ECV3D &event_clus, IM themeta);
+void newmeta_clus_nostar(ECV3D* event_clus, IM themeta);
 //void newmeta_tens_nostar(EST3D event_tens, IM themeta) { *event_tens->meta(themeta); }
 #elif __has_include("larcv3/core/dataformat/Particle.h")
 #include "larcv3/core/dataformat/EventSparseCluster.h"
@@ -31,7 +31,7 @@ typedef larcv::EventParticle EP;
 typedef std::shared_ptr<larcv::EventSparseCluster3D> ECV3Ds;
 typedef std::shared_ptr<larcv::EventSparseTensor3D> EST3Ds;
 typedef std::shared_ptr<larcv::EventParticle> EPs;
-void newmeta_clus_nostar(ECV3D &event_clus, IM themeta);
+void newmeta_clus_nostar(ECV3D* event_clus, IM themeta);
 //void newmeta_tens_nostar(*EST3D *event_tens, IM themeta)
 //{
 //    for (size_t i = 0; i < (*event_tens)->size(); i++)
