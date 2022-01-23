@@ -20,8 +20,8 @@ ECV3D *get_cluster_pointer(larcv::IOManager &mgr, std::string str1, std::string 
 EPs *get_particle_pointer(larcv::IOManager &mgr, std::string str1, std::string str2);
 void newmeta_clus(ECV3D *event_clus,IM themeta) ;
 void newmeta_tens(EST3D *event_tens, IM themeta) ;
-//void newmeta_clus_nostar(*ECV3D *event_clus, IM themeta) { *event_clus->meta(themeta); }
-//void newmeta_tens_nostar(*EST3D *event_tens, IM themeta) { *event_tens->meta(themeta); }
+void newmeta_clus_nostar(ECV3D &event_clus, IM themeta);
+//void newmeta_tens_nostar(EST3D event_tens, IM themeta) { *event_tens->meta(themeta); }
 IM getmeta_cluster(ECV3D event_clus) ;
 IM getmeta_cluster_2(ECV3D *event_clus) ;
 IM getmeta_tensor(EST3D event_tens);
@@ -47,13 +47,7 @@ ECV3Ds get_cluster_pointer(larcv::IOManager &mgr, std::string str1, std::string 
 EPs get_particle_pointer(larcv::IOManager &mgr, std::string str1, std::string str2);
 void newmeta_clus(ECV3Ds event_clus, IM themeta);
 void newmeta_tens(EST3Ds event_tens, IM themeta);
-//void newmeta_clus_nostar(*ECV3D *event_clus, IM themeta)
-//{
-//    for (size_t i = 0; i < (*event_clus)->size(); i++)
-//    {
-//        *event_clus->at(i).meta(themeta);
-//    }
-//}
+void newmeta_clus_nostar(ECV3D &event_clus, IM themeta);
 //void newmeta_tens_nostar(*EST3D *event_tens, IM themeta)
 //{
 //    for (size_t i = 0; i < (*event_tens)->size(); i++)
