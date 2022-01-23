@@ -152,7 +152,7 @@ namespace larcv
     {
       auto &cluster3d = mgr.get_data<ECV3D>(name);
       //#if __has_include("larcv/core/DataFormat/Particle.h")
-      newmeta_clus(&cluster3d, meta);
+      newmeta_clus_nostar(&cluster3d, meta);
       // #elif __has_include("larcv3/core/dataformat/Particle.h")
       // {
       //   for (size_t i = 0; i < cluster3d.size(); i++)

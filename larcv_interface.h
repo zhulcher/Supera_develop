@@ -15,19 +15,8 @@ typedef larcv::EventParticle EP;
 typedef larcv::EventClusterVoxel3D *ECV3Ds;
 typedef larcv::EventSparseTensor3D *EST3Ds;
 typedef larcv::EventParticle *EPs;
-EST3D *get_tensor_pointer(larcv::IOManager &mgr, std::string str1, std::string str2) ;
-ECV3D *get_cluster_pointer(larcv::IOManager &mgr, std::string str1, std::string str2) ;
-EPs *get_particle_pointer(larcv::IOManager &mgr, std::string str1, std::string str2);
-void newmeta_clus(ECV3D *event_clus,IM themeta) ;
-void newmeta_tens(EST3D *event_tens, IM themeta) ;
 void newmeta_clus_nostar(ECV3D &event_clus, IM themeta);
 //void newmeta_tens_nostar(EST3D event_tens, IM themeta) { *event_tens->meta(themeta); }
-IM getmeta_cluster(ECV3D event_clus) ;
-IM getmeta_cluster_2(ECV3D *event_clus) ;
-IM getmeta_tensor(EST3D event_tens);
-IM getmeta_tensor_2(EST3D *event_tens);
-void myresize(ECV3D *event_clus, const size_t mynum) ;
-//void id_to_xyz_index(larcv::Voxel3DMeta themeta,size_t ix, size_t iy, size_t iz,)
 #elif __has_include("larcv3/core/dataformat/Particle.h")
 #include "larcv3/core/dataformat/EventSparseCluster.h"
 #include "larcv3/core/dataformat/EventSparseTensor.h"
@@ -42,11 +31,6 @@ typedef larcv::EventParticle EP;
 typedef std::shared_ptr<larcv::EventSparseCluster3D> ECV3Ds;
 typedef std::shared_ptr<larcv::EventSparseTensor3D> EST3Ds;
 typedef std::shared_ptr<larcv::EventParticle> EPs;
-EST3Ds get_tensor_pointer(larcv::IOManager &mgr, std::string str1, std::string str2) ;
-ECV3Ds get_cluster_pointer(larcv::IOManager &mgr, std::string str1, std::string str2) ;
-EPs get_particle_pointer(larcv::IOManager &mgr, std::string str1, std::string str2);
-void newmeta_clus(ECV3Ds event_clus, IM themeta);
-void newmeta_tens(EST3Ds event_tens, IM themeta);
 void newmeta_clus_nostar(ECV3D &event_clus, IM themeta);
 //void newmeta_tens_nostar(*EST3D *event_tens, IM themeta)
 //{
@@ -55,13 +39,21 @@ void newmeta_clus_nostar(ECV3D &event_clus, IM themeta);
 //        *event_tens->at(i).meta(themeta);
 //    }
 //}
-IM getmeta_cluster(ECV3D event_clus) ;
+
+#endif
+
+EST3Ds get_tensor_pointer(larcv::IOManager &mgr, std::string str1, std::string str2);
+ECV3Ds get_cluster_pointer(larcv::IOManager &mgr, std::string str1, std::string str2);
+EPs get_particle_pointer(larcv::IOManager &mgr, std::string str1, std::string str2);
+
+void newmeta_clus(ECV3Ds event_clus, IM themeta);
+void newmeta_tens(EST3Ds event_tens, IM themeta);
+
+IM getmeta_cluster(ECV3D event_clus);
 IM getmeta_cluster_2(ECV3Ds event_clus);
 IM getmeta_tensor(EST3D event_tens);
 IM getmeta_tensor_2(EST3Ds event_tens);
-void myresize(ECV3Ds event_clus, const size_t mynum) ;
-
-#endif
+void myresize(ECV3Ds event_clus, const size_t mynum);
 
 supera::Point3D make_sup_point(larcv::Point3D point);
 supera::Point3D make_sup_point(std::vector<double> vec);
