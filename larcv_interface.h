@@ -69,6 +69,8 @@ void myresize(ECV3Ds event_clus, const size_t mynum) ;
 
 #endif
 
+supera::Point3D make_sup_point(larcv::Point3D point);
+supera::Point3D make_sup_point(std::vector<double> vec);
 double meta_pos(IM themeta, unsigned long long myid, int dim);
 void emplace_writeable_voxel(ECV3Ds event_clus, int outindex, larcv::VoxelSet myvs);
 void set_writeable_voxel(ECV3Ds event_clus, int index, larcv::VoxelSet myvs);

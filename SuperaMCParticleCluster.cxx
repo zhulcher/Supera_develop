@@ -1010,8 +1010,9 @@ namespace larcv
 
     emplace_tens(event_leftover, leftover_vs, meta3d);
     #elif __has_include("larcv/core/DataFormat/Particle.h")
-    event_leftover->emplace(std::move(leftover_vs), meta3d);
-    #endif
+    //event_leftover->emplace(std::move(leftover_vs), meta3d);
+    emplace_tens(event_leftover, leftover_vs, meta3d);
+#endif
     
   }
 
@@ -1158,15 +1159,8 @@ namespace larcv
       supera::Point3D min_pt;
       for (auto const &vox : grp.vs.as_vector())
       {
-        auto const pt = meta3d.position(vox.id());
-        #if __has_include("larcv/core/DataFormat/Particle.h")
-        auto const newpt=pt;
-        auto const newvtx=vtx;
-#elif __has_include("larcv3/core/dataformat/Particle.h")
-        auto const newpt=supera::Point3D(pt.at(0), pt.at(1), pt.at(2));
-        auto const newvtx=supera::Point3D(vtx.x[0], vtx.x[1], vtx.x[2]);
-#endif
-        double dist = newpt.squared_distance(newvtx);
+        auto const pt = make_sup_point(meta3d.position(vox.id()));                
+        double dist = pt.squared_distance(make_sup_point(vtx));
         //double dist = pow(pt.at(0)-vtx.x[0],2)+pow(pt.at(1)-vtx.x[1],2)+pow(pt.at(2)-vtx.x[2],2);
         if (dist > min_dist) continue;
         min_dist = dist;

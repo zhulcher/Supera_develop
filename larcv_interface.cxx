@@ -63,6 +63,8 @@ int pos_to_xyz_id(IM themeta,double posx, double posy, double posz, size_t& x, s
     themeta.id_to_xyz_index(vox_id, x, y, z);
     return 0;
 }
+supera::Point3D make_sup_point(larcv::Point3D pt) { return supera::Point3D(pt.x, pt.y, pt.z); }
+supera::Point3D make_sup_point(std::vector<double> vec) { return supera::Point3D(vec.at(0), vec.at(1), vec.at(2)); }
 #elif __has_include("larcv3/core/dataformat/Particle.h")
 EST3Ds get_tensor_pointer(larcv3::IOManager &mgr, std::string str1, std::string str2) { return std::dynamic_pointer_cast<EST3D>(mgr.get_data(str1, str2)); }
 ECV3Ds get_cluster_pointer(larcv3::IOManager &mgr, std::string str1, std::string str2) { return std::dynamic_pointer_cast<ECV3D>(mgr.get_data(str1, str2)); }
@@ -152,6 +154,8 @@ int pos_to_xyz_id(IM themeta, double posx, double posy, double posz, size_t &x, 
     x=vect2[0];y=vect2[1];z=vect2[2];
     return 0;
 }
+supera::Point3D make_sup_point(larcv::Point3D pt) {return supera::Point3D(pt.x[0], pt.x[1], pt.x[2]);}
+supera::Point3D make_sup_point(std::vector<double> vec) {return supera::Point3D(vec.at(0), vec.at(1), vec.at(2));}
 #endif
 
 #endif
