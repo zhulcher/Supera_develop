@@ -264,7 +264,8 @@ namespace larcv {
 
     double distTraveled = 0;
     for (std::size_t idx = 1; idx < traj.Points.size(); idx++)
-      distTraveled += (traj.Points[idx].GetPosition().Vect() - traj.Points[idx-1].GetPosition().Vect()).length() * 0.1;
+      distTraveled += (traj.Points[idx].GetPosition().Vect() - traj.Points[idx - 1].GetPosition().Vect()).Mag() * 0.1;
+      //distTraveled += (traj.Points[idx].GetPosition().Vect() - traj.Points[idx-1].GetPosition().Vect()).length() * 0.1;
     res.distance_travel(distTraveled);
 
     LARCV_DEBUG() << "   Final track startpoint: " << res.first_step().dump() << std::endl;
