@@ -31,7 +31,7 @@
 #endif
 
 // forward declarations
-//class TVector3;
+class TVector3;
 
 namespace larcv {
 

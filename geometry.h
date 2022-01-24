@@ -41,6 +41,8 @@
 #include <iomanip>
 #include <cmath>
 //#include "TVector3.h"
+#include "TVector3.h"
+#include "TLorentzVector.h"
 
 #if __has_include("larcv3/core/dataformat/Particle.h")
 #define larcv larcv3
