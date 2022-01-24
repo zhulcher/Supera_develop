@@ -3,15 +3,13 @@
 #include <numeric>
 
 #include "SuperaG4HitSegment.h"
-//#include "geometry.h"
 #include "raybox.h"
-#include "larcv_interface.h"
 
 namespace larcv
 {
   // --------------------------------------------------
   std::vector<larcv::Voxel> MakeVoxels(const ::TG4HitSegment &hitSegment,
-                                       const larcv::Voxel3DMeta &meta)
+                                       const IM &meta)
   {
     std::vector<larcv::Particle> noparticles;
     return MakeVoxels(hitSegment, meta, noparticles);
@@ -19,7 +17,7 @@ namespace larcv
 
     // --------------------------------------------------
   std::vector<larcv::Voxel> MakeVoxels(const ::TG4HitSegment &hitSegment,
-                                       const larcv::Voxel3DMeta &meta,
+                                       const IM &meta,
                                        std::vector<larcv::Particle> &particles)
   {
     std::vector<larcv::Voxel> voxels;
