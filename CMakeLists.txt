@@ -12,7 +12,7 @@ file(GLOB HEADERS *.h)
 #find_package(Geant4 REQUIRED)
 #find_package(EDepSim)
 #find_package(PythonLibs REQUIRED)
-#find_package(ROOT CONFIG REQUIRED)
+find_package(ROOT CONFIG REQUIRED)
 
 # Add a shared library
 add_library(${name} OBJECT ${SOURCES})
