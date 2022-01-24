@@ -34,6 +34,7 @@ target_include_directories(Supera PUBLIC /app/edep/include)
 #target_link_libraries(Supera ${PYTHON_LIBRARIES})
 #target_include_directories(Supera PUBLIC /app/geant4/include/Geant4)
 target_include_directories(Supera PUBLIC /opt/root/include)
+target_include_directories(Supera PUBLIC /app/edep-sim/io)
 
 
 #target_include_directories(Supera PRIVATE /app/larcv3/src/larcv3/app/Supera)
