@@ -64,8 +64,8 @@ template<typename T>
         Vec3() : x(T(0)), y(T(0)), z(T(0)) {}
         Vec3(T xx) : x(xx), y(xx), z(xx) {}
         Vec3(T xx, T yy, T zz) : x(xx), y(yy), z(zz) {}
-        //Vec3(const TVector3& v) : x(v.X()), y(v.Y()), z(v.Z()) {}
-        //Vec3(const SLorntzVector& v) : x(v.X()), y(v.Y()), z(v.Z()) {}
+        Vec3(const TVector3& v) : x(v.X()), y(v.Y()), z(v.Z()) {}
+        Vec3(const TLorentzVector& v) : x(v.X()), y(v.Y()), z(v.Z()) {}
         Vec3 operator + (const Vec3 &v) const
         { return Vec3(x + v.x, y + v.y, z + v.z); }
         Vec3 & operator += (const Vec3 &v)
