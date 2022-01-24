@@ -434,13 +434,17 @@ namespace larcv
     // store
     assert(semantic_vs.size() == cid_vs.size());
 
-#if __has_include("larcv3/core/dataformat/Particle.h")
-    event_segment->emplace(std::move(semantic_vs), std::move(meta3d));
-    event_cindex->emplace(std::move(cid_vs), std::move(meta3d));
-#elif __has_include("larcv/core/DataFormat/Particle.h")
-    event_segment->emplace(std::move(semantic_vs), meta3d);
-    event_cindex->emplace(std::move(cid_vs), meta3d);
-#endif
+    emplace_clus(event_segment, semantic_vs, meta3d);
+    emplace_clus(event_cindex, cid_vs, meta3d);
+
+    //#if __has_include("larcv3/core/dataformat/Particle.h")
+
+    // event_segment->emplace(std::move(semantic_vs), std::move(meta3d));
+    // event_cindex->emplace(std::move(cid_vs), std::move(meta3d));
+    //#elif __has_include("larcv/core/DataFormat/Particle.h")
+    // event_segment->emplace(std::move(semantic_vs), meta3d);
+    // event_cindex->emplace(std::move(cid_vs), meta3d);
+    //#endif
 
     auto event_mcp = get_particle_pointer(mgr, "particle", _output_label);
     // Store output

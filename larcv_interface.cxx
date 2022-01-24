@@ -10,6 +10,7 @@ EPs *get_particle_pointer(larcv::IOManager &mgr, std::string str1, std::string s
 void newmeta_clus(ECV3D *event_clus, IM themeta) { event_clus->meta(themeta); }
 void newmeta_tens(EST3D *event_tens, IM themeta) { event_tens->meta(themeta); }
 void newmeta_clus_nostar(ECV3D* event_clus, IM themeta) { event_clus->meta(themeta); }
+void newmeta_tens_nostar(EST3D* event_tens, IM themeta) { event_tens->meta(themeta); }
 
 IM getmeta_cluster(ECV3D event_clus) { return event_clus.meta(); }
 IM getmeta_cluster_2(ECV3D *event_clus) { return event_clus->meta(); }
@@ -32,7 +33,10 @@ void emplace_tens(EST3Ds event_tens, larcv::VoxelSet myvs, larcv::Voxel3DMeta th
 {
     event_tens->emplace(std::move(myvs), themeta);
 }
-
+void emplace_clus(ECV3Ds event_clus, larcv::VoxelSet myvs, IM themeta)
+{
+    event_clus->emplace(std::move(myvs), themeta);
+}
 
 double meta_min(IM themeta,int dim) 
 {
@@ -91,13 +95,13 @@ void newmeta_clus_nostar(ECV3D* event_clus, IM themeta)
         event_clus->at(i).meta(themeta);
     }
 }
-// void newmeta_tens_nostar(*EST3D *event_tens, IM themeta)
-//{
-//     for (size_t i = 0; i < (*event_tens)->size(); i++)
-//     {
-//         *event_tens->at(i).meta(themeta);
-//     }
-// }
+ void newmeta_tens_nostar(EST3D* event_tens, IM themeta)
+ {
+     for (size_t i = 0; i < (event_tens)->size(); i++)
+     {
+         event_tens->at(i).meta(themeta);
+     }
+ }
 IM getmeta_cluster(ECV3D event_clus) { return event_clus.sparse_cluster(0).meta(); }
 IM getmeta_cluster_2(ECV3Ds event_clus) { return event_clus->sparse_cluster(0).meta(); }
 IM getmeta_tensor(EST3D event_tens) { return event_tens.sparse_tensor(0).meta(); }
@@ -132,6 +136,13 @@ void emplace_tens(EST3Ds event_tens, larcv3::VoxelSet myvs, IM themeta)
     for (size_t i = 0; i < event_tens->size(); i++)
     {
         event_tens->at(i).emplace(std::move(myvs), themeta);
+    }
+}
+void emplace_clus(ECV3Ds event_clus, larcv::VoxelSet myvs, IM themeta)
+{
+    for (size_t i = 0; i < event_clus->size(); i++)
+    {
+        event_clus->at(i).emplace(std::move(myvs), themeta);
     }
 }
 
