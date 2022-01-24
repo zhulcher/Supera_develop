@@ -53,7 +53,7 @@ double meta_pos(IM themeta, unsigned long long myid, int dim);
 void emplace_writeable_voxel(ECV3Ds event_clus, int outindex, larcv::VoxelSet myvs);
 void set_writeable_voxel(ECV3Ds event_clus, int index, larcv::VoxelSet myvs);
 void emplace_tens(EST3Ds event_tens, larcv::VoxelSet myvs, IM themeta);
-void emplace_clus(ECV3Ds event_clus, larcv::VoxelSet myvs, IM themeta);
+// void emplace_clus(ECV3Ds event_clus, larcv::VoxelSet myvs, IM themeta);
 double meta_min(IM themeta, int dim);
 double meta_vox_dim(IM themeta, int dim);
 void id_to_xyz_id(IM themeta, larcv::VoxelID_t id, size_t& x, size_t& y, size_t& z);

@@ -33,10 +33,10 @@ void emplace_tens(EST3Ds event_tens, larcv::VoxelSet myvs, larcv::Voxel3DMeta th
 {
     event_tens->emplace(std::move(myvs), themeta);
 }
-void emplace_clus(ECV3Ds event_clus, larcv::VoxelSet myvs, IM themeta)
-{
-    event_clus->emplace(std::move(myvs), themeta);
-}
+// void emplace_clus(ECV3Ds event_clus, larcv::VoxelSet myvs, IM themeta)
+// {
+//     event_clus->emplace(std::move(myvs), themeta);
+// }
 
 double meta_min(IM themeta,int dim) 
 {
@@ -138,13 +138,13 @@ void emplace_tens(EST3Ds event_tens, larcv3::VoxelSet myvs, IM themeta)
         event_tens->at(i).emplace(std::move(myvs), themeta);
     }
 }
-void emplace_clus(ECV3Ds event_clus, larcv::VoxelSet myvs, IM themeta)
-{
-    for (size_t i = 0; i < event_clus->size(); i++)
-    {
-        event_clus->at(i).emplace(std::move(myvs), themeta);
-    }
-}
+// void emplace_clus(ECV3Ds event_clus, larcv::VoxelSet myvs, IM themeta)
+// {
+//     for (size_t i = 0; i < event_clus->size(); i++)
+//     {
+//         event_clus->at(i).emplace(std::move(myvs), themeta);
+//     }
+// }
 
 
 double meta_min(IM themeta,int dim) {return themeta.min(dim);}

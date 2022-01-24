@@ -434,7 +434,7 @@ namespace larcv
     // store
     assert(semantic_vs.size() == cid_vs.size());
 
-    emplace_clus(event_segment, semantic_vs, meta3d);
+    emplace_tens(event_segment, semantic_vs, meta3d);
     emplace_tens(event_cindex, cid_vs, meta3d);
 
     //#if __has_include("larcv3/core/dataformat/Particle.h")
