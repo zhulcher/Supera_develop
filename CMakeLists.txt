@@ -22,7 +22,7 @@ target_link_libraries(Supera PUBLIC EDepSim::edepsim_io "/app/edep-sim/io") #sho
 
 #include("${ROOT_USE_FILE}")
 
-target_link_libraries(Supera ${ROOT_LIBRARIES})
+target_link_libraries(Supera PUBLIC ${ROOT_LIBRARIES})
 
 #MINE ?????????
 target_link_libraries(Supera PUBLIC ROOT::Physics)
