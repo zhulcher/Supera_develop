@@ -13,15 +13,6 @@
 #include <string>
 
 
-#if __has_include("larcv/core/DataFormat/Particle.h")
-#include "larcv/core/Base/PSet.h"
-#include "larcv/core/Base/larcv_logger.h"
-#elif __has_include("larcv3/core/dataformat/Particle.h")
-#include "larcv3/core/base/PSet.h"
-#include "larcv3/core/base/larcv_logger.h"
-#define larcv larcv3
-#endif
-
 #include "larcv_interface.h"
 #include "MCParticleList.h"
 #include "SuperaBase.h"

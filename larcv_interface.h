@@ -8,10 +8,11 @@
 #include "larcv/core/DataFormat/EventVoxel3D.h"
 #include "larcv/core/DataFormat/Particle.h"
 #include "larcv2core/DataFormat/Voxel3DMeta.h"
+#include "larcv/core/DataFormat/Voxel.h"
+#include "larcv/core/Base/PSet.h"
+#include "larcv/core/Base/larcv_logger.h"
 typedef larcv::Voxel3DMeta IM;
 typedef larcv::EventClusterVoxel3D ECV3D;
-typedef larcv::EventSparseTensor3D EST3D;
-typedef larcv::EventParticle EP;
 typedef larcv::EventClusterVoxel3D *ECV3Ds;
 typedef larcv::EventSparseTensor3D *EST3Ds;
 typedef larcv::EventParticle *EPs;
@@ -21,15 +22,19 @@ typedef larcv::EventParticle *EPs;
 #include "larcv3/core/dataformat/ImageMeta.h"
 #include "larcv3/core/dataformat/Particle.h"
 #include "larcv3/core/dataformat/EventParticle.h"
+#include "larcv3/core/dataformat/Voxel.h"
+#include "larcv3/core/base/PSet.h"
+#include "larcv3/core/base/larcv_logger.h"
 #define larcv larcv3
 typedef larcv::ImageMeta<3> IM;
 typedef larcv::EventSparseCluster3D ECV3D;
-typedef larcv::EventSparseTensor3D EST3D;
-typedef larcv::EventParticle EP;
 typedef std::shared_ptr<larcv::EventSparseCluster3D> ECV3Ds;
 typedef std::shared_ptr<larcv::EventSparseTensor3D> EST3Ds;
 typedef std::shared_ptr<larcv::EventParticle> EPs;
 #endif
+
+typedef larcv::EventSparseTensor3D EST3D;
+typedef larcv::EventParticle EP;
 
 EST3Ds get_tensor_pointer(larcv::IOManager &mgr, std::string str1, std::string str2);
 ECV3Ds get_cluster_pointer(larcv::IOManager &mgr, std::string str1, std::string str2);

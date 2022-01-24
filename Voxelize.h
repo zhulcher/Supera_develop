@@ -15,19 +15,7 @@
 #include "geometry.h"
 
 
-#ifdef __has_include
-#if __has_include("larcv/core/DataFormat/Particle.h")
-#include "larcv/core/DataFormat/Particle.h"
-#include "larcv/core/DataFormat/Voxel.h"
-#include "larcv/core/DataFormat/Voxel3DMeta.h"
-#elif __has_include("larcv3/core/dataformat/Particle.h")
-#include "larcv3/core/dataformat/Particle.h"
-#include "larcv3/core/dataformat/Voxel.h"
-//#include "larcv3/core/dataformat/EventSparseTensor.h"
-#include "larcv3/core/dataformat/BBox.h"
-#define larcv larcv3
-#endif
-#endif
+#include "larcv_interface.h"
 
 namespace larcv
 {
@@ -40,9 +28,6 @@ namespace larcv
   typedef Vec3<float> Vec3f;
   typedef Vec3<double> Vec3d;
 
-  #if __has_include("larcv3/core/dataformat/Particle.h")
-  typedef ImageMeta<3> Voxel3DMeta;
-  #endif
 
 
 
@@ -54,7 +39,7 @@ namespace larcv
   /// \return                  A vector of voxels
   std::vector <larcv::Voxel>
   MakeVoxels(const ::TG4HitSegment &hitSegment,
-             const larcv::Voxel3DMeta &meta,
+             const IM &meta,
              std::vector <larcv::Particle> &particles);
 
   /// Split an EDEP TG4HitSegment true energy deposit into voxels
@@ -64,7 +49,7 @@ namespace larcv
   /// \return                  A vector of voxels
   std::vector <larcv::Voxel>
   MakeVoxels(const ::TG4HitSegment &hitSegment,
-             const larcv::Voxel3DMeta &meta);
+             const IM &meta);
 
   /// Where (if anywhere) does a line segment intersect a given bounding box?
   /// (If the entire line segment is contained, the entry and exit points
