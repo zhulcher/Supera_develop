@@ -6,16 +6,13 @@ file(GLOB SOURCES *.cxx)
 file(GLOB HEADERS *.h)
 
 
-
+# Add a shared library
+add_library(${name} OBJECT ${SOURCES})
 
 
 #find_package(Geant4 REQUIRED)
-#find_package(EDepSim)
 #find_package(PythonLibs REQUIRED)
 find_package(ROOT CONFIG REQUIRED)
-
-# Add a shared library
-add_library(${name} OBJECT ${SOURCES})
 
 find_package(EDepSim REQUIRED) #short term fix
 target_link_libraries(Supera PUBLIC EDepSim::edepsim_io EDepSim::edepsim "/app/edep-sim/io") #short term fix
