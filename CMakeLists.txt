@@ -17,23 +17,23 @@ file(GLOB HEADERS *.h)
 # Add a shared library
 add_library(${name} OBJECT ${SOURCES})
 
-#find_package(EDepSim REQUIRED) #short term fix
-#target_link_libraries(Supera PUBLIC EDepSim::edepsim_io "/app/edep-sim/io") #short term fix
+find_package(EDepSim REQUIRED) #short term fix
+target_link_libraries(Supera PUBLIC EDepSim::edepsim_io "/app/edep-sim/io") #short term fix
 
 #include("${ROOT_USE_FILE}")
 
-#target_link_libraries(Supera ${ROOT_LIBRARIES})
+target_link_libraries(Supera ${ROOT_LIBRARIES})
 
 #MINE ?????????
-#target_link_libraries(Supera PUBLIC ROOT::Physics)
+target_link_libraries(Supera PUBLIC ROOT::Physics)
 #target_link_libraries( Supera PUBLIC EDepSim::edepsim_io )
-#target_link_libraries( Supera PUBLIC EDepSim::edepsim )
+target_link_libraries( Supera PUBLIC EDepSim::edepsim )
 #target_link_libraries( Supera PUBLIC ${Geant4_LIBRARIES})
-#target_include_directories(Supera PUBLIC /app/edep/include)
+target_include_directories(Supera PUBLIC /app/edep/include)
 #target_include_directories(Supera PUBLIC ${PYTHON_INCLUDE_DIRS})
 #target_link_libraries(Supera ${PYTHON_LIBRARIES})
 #target_include_directories(Supera PUBLIC /app/geant4/include/Geant4)
-#target_include_directories(Supera PUBLIC /app/root/include)
+target_include_directories(Supera PUBLIC /opt/root/include)
 
 
 #target_include_directories(Supera PRIVATE /app/larcv3/src/larcv3/app/Supera)
