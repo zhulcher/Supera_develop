@@ -233,8 +233,9 @@ namespace larcv {
         }
 
         LARCV_DEBUG() << "   --> intersects bounding box at (" << p1.x << "," << p1.y << "," << p1.z << ")" << std::endl;
-        vtx.reset(new larcv::Vertex(p1.x, p1.y, p1.z,
-                                    trajP1.T() + (p2 - p1).length() / (trajP2 - trajP1).Vect().length() * (trajP2.T() - trajP1.T())) );
+        //vtx.reset(new larcv::Vertex(p1.x, p1.y, p1.z,trajP1.T() + (p2 - p1).length() / (trajP2 - trajP1).Vect().length() * (trajP2.T() - trajP1.T())) );
+        vtx.reset(new larcv::Vertex(p1.x, p1.y, p1.z, trajP1.T() + (p2 - p1).length() / (trajP2 - trajP1).Vect().Mag() * (trajP2.T() - trajP1.T())));
+
         break;
       }
       return vtx;

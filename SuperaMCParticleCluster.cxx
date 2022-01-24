@@ -518,12 +518,12 @@ namespace larcv
                       [&trks](const int trk) { trks << " " << trk; });
         LARCV_DEBUG() << "   Recording edep from GEANT trackids" << trks.str()
                       << ": total Edep=" << sedep.EnergyDeposit
-                      << ", start pos=(" << sedep.Start.Vect().x*0.1 << ","
-                                         << sedep.Start.Vect().y*0.1 << ","
-                                         << sedep.Start.Vect().z*0.1 << ")"
-                      << ", stop pos=(" << sedep.Stop.Vect().x*0.1 << ","
-                                        << sedep.Stop.Vect().y*0.1 << ","
-                                        << sedep.Stop.Vect().z*0.1 << ")"
+                      << ", start pos=(" << sedep.Start.Vect().x()*0.1 << ","
+                                         << sedep.Start.Vect().y()*0.1 << ","
+                                         << sedep.Start.Vect().z()*0.1 << ")"
+                      << ", stop pos=(" << sedep.Stop.Vect().x()*0.1 << ","
+                                        << sedep.Stop.Vect().y()*0.1 << ","
+                                        << sedep.Stop.Vect().z()*0.1 << ")"
                       << std::endl;
         sedep_counter++;
 
