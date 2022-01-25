@@ -51,7 +51,13 @@ supera_procs = []
 for name in proc.process_names():
 	pid = proc.process_id(name)
 	print(pid, type(pid))
-	module = proc.process_ptr(pid)
+	print("hi1")
+	module = proc.process_ptr(0)
+	print("hi2")
+	module = proc.process_ptr(1)
+	print("hi3")
+	module = proc.process_ptr(0)
+	print("hi4")
 	#print("name:",name)
 	#print(dir(module))
 	if getattr(module, 'is')('Supera'):
@@ -67,7 +73,7 @@ for entry in xrange(*event_range):
 		break
 	ev = ch.Event
 
-	proc.set_id(ev.RunId,0,ev.EventId)
+	proc.set_id(ev.RunId, 0, ev.EventId)
 	# set event pointers
 	for pid in supera_procs:
 		print("got here6")
