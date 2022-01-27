@@ -14,24 +14,25 @@ add_library(${name} OBJECT ${SOURCES})
 #find_package(PythonLibs REQUIRED)
 find_package(ROOT CONFIG REQUIRED)
 
+#find_package(EDepSim REQUIRED) #short term fix
+#target_link_libraries(Supera PUBLIC EDepSim::edepsim_io EDepSim::edepsim "/app/edep-sim/io") #short term fix
+
 find_package(EDepSim REQUIRED) #short term fix
-target_link_libraries(Supera PUBLIC EDepSim::edepsim_io EDepSim::edepsim "/app/edep-sim/io") #short term fix
+target_link_libraries(${name} EDepSim::edepsim_io)# "/app/edep-sim/io") #short term fix
 
 #include("${ROOT_USE_FILE}")
 
-target_link_libraries(Supera PUBLIC ${ROOT_LIBRARIES})
-
-#MINE ?????????
-target_link_libraries(Supera PUBLIC ROOT::Physics)
-target_link_libraries( Supera PUBLIC EDepSim::edepsim_io )
+#target_link_libraries(Supera PUBLIC ${ROOT_LIBRARIES})
+#target_link_libraries(Supera PUBLIC ROOT::Physics)
+#target_link_libraries( Supera PUBLIC EDepSim::edepsim_io )
 #target_link_libraries( Supera PUBLIC EDepSim::edepsim )
 #target_link_libraries( Supera PUBLIC ${Geant4_LIBRARIES})
 #target_include_directories(Supera PUBLIC /app/edep/include)
 #target_include_directories(Supera PUBLIC ${PYTHON_INCLUDE_DIRS})
 #target_link_libraries(Supera ${PYTHON_LIBRARIES})
 #target_include_directories(Supera PUBLIC /app/geant4/include/Geant4)
-include_directories(Supera PUBLIC /opt/root/include)
-include_directories(Supera PUBLIC /app/edep-sim/io)
+#include_directories(Supera PUBLIC /opt/root/include)
+#include_directories(Supera PUBLIC /app/edep-sim/io)
 
 
 #target_include_directories(Supera PRIVATE /app/larcv3/src/larcv3/app/Supera)

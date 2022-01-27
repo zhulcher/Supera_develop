@@ -43,6 +43,9 @@ sys.stdout.flush()
 proc.initialize()
 supera_procs = []
 
+ptrs = []
+
+
 #module = proc.process_ptr(0)
 #module = proc.process_ptr(1)
 #module = proc.process_ptr(0)
@@ -50,21 +53,26 @@ supera_procs = []
 #print(proc.process_names())
 for name in proc.process_names():
 	pid = proc.process_id(name)
-	print(pid, type(pid))
-	print("hi1")
-	module = proc.process_ptr(0)
-	print("hi2")
-	module = proc.process_ptr(1)
-	print("hi3")
-	module = proc.process_ptr(0)
-	print("hi4")
+	ptrs.append(proc.process_ptr(pid))
+	#print(pid, type(pid))
+	#print("hi kazu22")
+	#module=
+	#print("hi222")
+	#mod2=proc.process_ptr(0)
+	#print("hi322")
+	#mod3=proc.process_ptr(0)
+	#print("hi422")
 	#print("name:",name)
 	#print(dir(module))
-	if getattr(module, 'is')('Supera'):
+
+	if getattr(ptrs[-1], 'is')('Supera'):
 		print('Running a Supera module:', name)
 		supera_procs.append(pid)
-print(supera_procs)
+
+print("All the Supera Procs ", supera_procs)
 # Event loop
+
+
 for entry in xrange(*event_range):
 	print("considering event:", entry)
 	sys.stdout.flush()
@@ -76,11 +84,11 @@ for entry in xrange(*event_range):
 	proc.set_id(ev.RunId, 0, ev.EventId)
 	# set event pointers
 	for pid in supera_procs:
-		print("got here6")
-		print(pid, type(pid))
-		module = proc.process_ptr(pid)
-		print("got here7")
-		module.SetEvent(ev)  # write this into pybind
+		#module2 = proc.process_ptr(pid) #pybind scope issue without 2
+		print("pid", pid)
+		print(type(ev))
+		print(ev.__dict__.keys())
+		ptrs[pid].SetEvent(ev)
 		print("got here8")
 
 	proc.process_entry()
