@@ -4,9 +4,9 @@
 
 #if __has_include("larcv/core/DataFormat/Particle.h")
 
-EST3D *get_tensor_pointer(larcv::IOManager &mgr, std::string str1, std::string str2) { return (EST3D *)(mgr.get_data(str1, str2)); }
-ECV3D *get_cluster_pointer(larcv::IOManager &mgr, std::string str1, std::string str2) { return (ECV3D *)(mgr.get_data(str1, str2)); }
-EPs *get_particle_pointer(larcv::IOManager &mgr, std::string str1, std::string str2) { return (EP *)(mgr.get_data(str1, str2)); }
+EST3Ds get_tensor_pointer(larcv::IOManager &mgr, std::string str1, std::string str2) { return (EST3Ds)(mgr.get_data(str1, str2)); }
+ECV3Ds get_cluster_pointer(larcv::IOManager &mgr, std::string str1, std::string str2) { return (ECV3Ds)(mgr.get_data(str1, str2)); }
+EPs get_particle_pointer(larcv::IOManager &mgr, std::string str1, std::string str2) { return (EPs)(mgr.get_data(str1, str2)); }
 void newmeta_clus(ECV3D *event_clus, IM themeta) { event_clus->meta(themeta); }
 void newmeta_tens(EST3D *event_tens, IM themeta) { event_tens->meta(themeta); }
 void newmeta_clus_nostar(ECV3D* event_clus, IM themeta) { event_clus->meta(themeta); }
