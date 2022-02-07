@@ -18,8 +18,6 @@
 #include <vector>
 #include <algorithm>
 
-#include "TG4Trajectory.h"
-
 
 #if __has_include("larcv/core/DataFormat/Particle.h")
 #include "larcv/core/DataFormat/Particle.h"
