@@ -9,10 +9,7 @@
 #include "BBox.h"
 //#include <random>
 
-#if __has_include("larcv3/core/dataformat/Particle.h")
-#define larcv larcv3
-#include "larcv3/core/dataformat/ImageMeta.h"
-#endif
+#include "larcv_interface.h"
 
     namespace larcv {
 

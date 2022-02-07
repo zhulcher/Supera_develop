@@ -55,6 +55,8 @@ namespace larcv
 
 }
 
+
+#if __has_include("larcv3/core/dataformat/Particle.h")
 void init_superabase(pybind11::module m)
 {
   using Class = larcv3::SuperaBase;
@@ -66,5 +68,8 @@ void init_superabase(pybind11::module m)
   // processbase.def(pybind11::init<const std::string>(),
   // pybind11::arg("name")="ProcessBase");
 }
+#endif
+
+
 
 #endif
