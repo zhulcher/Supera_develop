@@ -7,7 +7,7 @@
 #include "larcv/core/DataFormat/EventParticle.h"
 #include "larcv/core/DataFormat/EventVoxel3D.h"
 #include "larcv/core/DataFormat/Particle.h"
-#include "larcv2core/DataFormat/Voxel3DMeta.h"
+#include "larcv/core/DataFormat/Voxel3DMeta.h"
 #include "larcv/core/DataFormat/Voxel.h"
 #include "larcv/core/Base/PSet.h"
 #include "larcv/core/Base/larcv_logger.h"
