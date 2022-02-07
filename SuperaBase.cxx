@@ -2,7 +2,6 @@
 #define __SUPERABASE_CXX__
 
 #include "SuperaBase.h"
-#include "TG4Event.h"
 
 namespace larcv
 {

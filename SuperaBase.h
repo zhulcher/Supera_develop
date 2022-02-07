@@ -19,10 +19,12 @@
 #include "larcv/core/Processor/ProcessBase.h"
 #include "larcv/core/Processor/ProcessFactory.h"
 #include "larcv/core/DataFormat/ImageMeta.h"
+#include "EDepSim/TG4Event.h"
 #elif __has_include("larcv3/core/dataformat/Particle.h")
 #include "larcv3/core/processor/ProcessBase.h"
 #include "larcv3/core/processor/ProcessFactory.h"
 #include "larcv3/core/dataformat/ImageMeta.h"
+#include "TG4Event.h"
 #define larcv larcv3
 #endif
 #endif
@@ -33,7 +35,7 @@
 
 // FIXME(kvtsang) Temporary solution to access associations
 //#include "art/Framework/Principal/Event.h"
-#include "TG4Event.h"
+
 
 namespace larcv
 {

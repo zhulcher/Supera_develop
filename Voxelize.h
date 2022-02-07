@@ -11,8 +11,15 @@
 
 #include <vector>
 //#include "TG4HitSegment.h"
-#include "TG4Event.h"
+
 #include "geometry.h"
+
+#if __has_include("larcv/core/DataFormat/Particle.h")
+#include "EDepSim/TG4Event.h"
+#elif __has_include("larcv3/core/dataformat/Particle.h")
+#include "TG4Event.h"
+#endif
+
 
 
 #include "larcv_interface.h"
