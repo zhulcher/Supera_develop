@@ -55,6 +55,12 @@
             bounds[0].x=box.min(0); bounds[0].y=box.min(1); bounds[0].z=box.min(2); 
             bounds[1].x=box.max(0); bounds[1].y=box.max(1); bounds[1].z=box.max(2);
         }
+        #elif __has_include("larcv/core/DataFormat/Particle.h")
+        AABBox(const larcv::BBox3D& box)
+        {
+            bounds[0].x=box.min_x(); bounds[0].y=box.min_y(); bounds[0].z=box.min_z(); 
+            bounds[1].x=box.max_x(); bounds[1].y=box.max_y(); bounds[1].z=box.max_z();
+        }
         #endif
 
         /// Find locations of intersections of a given ray with this box.
