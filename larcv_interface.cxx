@@ -43,12 +43,16 @@ double meta_min(IM themeta,int dim)
     if (dim == 0) return themeta.min_x();
     if (dim == 1) return themeta.min_y();
     if (dim == 2) return themeta.min_z();
+    std::cout<<"bad dimension"<<std::endl;
+    return 0;
 }
 double meta_vox_dim(IM themeta, int dim) 
 { 
     if (dim == 0) return themeta.size_voxel_x();
     if (dim == 1) return themeta.size_voxel_y();
     if (dim == 2) return themeta.size_voxel_z();
+    std::cout << "bad dimension" << std::endl;
+    return 0;
 }
 
 double meta_pos(IM themeta, unsigned long long myid, int dim)
@@ -56,14 +60,16 @@ double meta_pos(IM themeta, unsigned long long myid, int dim)
     if (dim == 0) return themeta.pos_x(myid);
     if (dim == 1) return themeta.pos_y(myid);
     if (dim == 2) return themeta.pos_z(myid);
+    std::cout << "bad dimension" << std::endl;
+    return 0;
 }
 void id_to_xyz_id(IM themeta,larcv::VoxelID_t id, size_t &x, size_t &y, size_t &z)
 {
-    themeta.id_to_xyz_index( id, x, y, z)
+    themeta.id_to_xyz_index( id, x, y, z);
 }
 int pos_to_xyz_id(IM themeta,double posx, double posy, double posz, size_t& x, size_t& y, size_t& z,larcv::VoxelID_t &vox_id)
 {
-    vox_id = themeta.id(posx, posy, posy);
+    vox_id = themeta.id(posx, posy, posz);
     if(vox_id==larcv::kINVALID_VOXELID) return 1;
     themeta.id_to_xyz_index(vox_id, x, y, z);
     return 0;
