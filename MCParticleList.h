@@ -23,8 +23,10 @@
 
 #if __has_include("larcv/core/DataFormat/Particle.h")
 #include "larcv/core/DataFormat/Particle.h"
+#include "EDepSim/TG4Trajectory.h"
 #elif __has_include("larcv3/core/dataformat/Particle.h")
 #include "larcv3/core/dataformat/Particle.h"
+#include "TG4Trajectory.h"
 #define larcv larcv3
 #endif
 

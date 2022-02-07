@@ -14,7 +14,7 @@
 #ifndef __SUPERABASE_H__
 #define __SUPERABASE_H__
 
-#ifdef __has_include
+
 #if __has_include("larcv/core/DataFormat/Particle.h")
 #include "larcv/core/Processor/ProcessBase.h"
 #include "larcv/core/Processor/ProcessFactory.h"
@@ -26,7 +26,8 @@
 #include "larcv3/core/dataformat/ImageMeta.h"
 #include "TG4Event.h"
 #define larcv larcv3
-#endif
+#include <pybind11/pybind11.h>
+void init_superabase(pybind11::module m);
 #endif
 
 //#include "FMWKInterface.h"
@@ -105,8 +106,6 @@ namespace larcv
 
 }
 
-#include <pybind11/pybind11.h>
-void init_superabase(pybind11::module m);
 
 #endif
 /** @} */ // end of doxygen group
