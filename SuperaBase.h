@@ -71,7 +71,7 @@ namespace larcv
       _csv_fname = fname;
     }
 
-    void SetEvent(PyObject *ev) { _event = ev; };
+    void SetEvent(const TG4Event *ev) { _event = ev; };
 
     void ClearEventData();
 
