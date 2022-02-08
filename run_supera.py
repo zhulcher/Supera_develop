@@ -6,7 +6,10 @@ if sys.version_info.major == 2:
 	from past.builtins import xrange
 if sys.version_info.major == 3:
 	xrange = range
-import larcv
+import larcv 
+if hasattr(larcv, 'larcv'): from larcv import larcv
+
+
 
 
 if len(sys.argv) < 2:

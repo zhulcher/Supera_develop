@@ -17,7 +17,7 @@
 //#ifndef __CLING__
 
 #include "SuperaBase.h"
-#ifdef __has_include
+
 #if __has_include("larcv/core/DataFormat/Particle.h")
 #include "larcv/core/DataFormat/EventParticle.h"
 #include "larcv/core/DataFormat/EventVoxel3D.h"
@@ -25,10 +25,9 @@
 #include "larcv3/core/dataformat/EventParticle.h"
 #include "larcv3/core/dataformat/Voxel.h"
 #include "larcv3/core/dataformat/EventSparseTensor.h"
-
 #define larcv larcv3
 #endif
-#endif
+
 
 // forward declarations
 class TVector3;

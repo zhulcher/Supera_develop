@@ -6,14 +6,14 @@
 #include <set>
 #include <sstream>
 
-#ifdef __has_include
+
 #if __has_include("larcv/core/DataFormat/Particle.h")
 #include "larcv/core/Base/larbys.h"
 #elif __has_include("larcv3/core/dataformat/Particle.h")
 #include "larcv3/core/base/larbys.h"
 #define larcv larcv3
 #endif
-#endif
+
 
 
 
