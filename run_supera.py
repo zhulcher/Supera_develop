@@ -2,15 +2,9 @@
 from __future__ import print_function
 import sys
 from ROOT import TChain
-if sys.version_info.major == 2:
-	from past.builtins import xrange
-if sys.version_info.major == 3:
-	xrange = range
+from past.builtins import xrange
 import larcv 
 if hasattr(larcv, 'larcv'): from larcv import larcv
-
-
-
 
 if len(sys.argv) < 2:
    print('Usage: python', sys.argv[0],
@@ -33,12 +27,10 @@ if len(sys.argv) > 2:
 		print('Adding input:', argv)
 		ch.AddFile(argv)
 print("Chain has", ch.GetEntries(), "entries")
-#print("????", proc.batch_start_entry())
 # sometimes num_entry overflows instead of being negative.  not sure why?
-#event_range = (proc.batch_start_entry(), proc.batch_start_entry() + proc.batch_num_entry()) \
-#	if proc.batch_num_entry() > 0 and proc.batch_num_entry() < 1e18 \
-#	else (0, ch.GetEntries())
-event_range = (0, ch.GetEntries())
+event_range = (proc.batch_start_entry(), proc.batch_start_entry() + proc.batch_num_entry()) \
+	if proc.batch_num_entry() > 0 and proc.batch_num_entry() < 1e18 \
+	else (0, min(ch.GetEntries(),50))
 print('Processing', event_range[1] - event_range[0], 'events')
 sys.stdout.flush()
 
